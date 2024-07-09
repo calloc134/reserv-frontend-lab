@@ -8,24 +8,28 @@ import {
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { LoginPage } from "./pages/LoginPage";
+import { MyReservations } from "./pages/MyReservations";
+import { TanStackRouterDevtools } from "@tanstack/router-devtools";
+import { HomeLayout } from "./components/HomeLayout";
 
 const rootRoute = createRootRoute({
   component: () => (
     <div>
       <Outlet />
+      <TanStackRouterDevtools />
     </div>
   ),
 });
 
-const IndexRoute = createRoute({
+const index_route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   component: () => <LoginPage />,
 });
 
-const homeRoute = createRoute({
+const home_route = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/home/",
+  path: "/home",
   component: () => {
     const { isSignedIn } = useAuth();
 
@@ -41,14 +45,23 @@ const homeRoute = createRoute({
     }, [isSignedIn, navigate]);
 
     return (
-      <div>
+      <HomeLayout>
         <Outlet />
-      </div>
+      </HomeLayout>
     );
   },
 });
 
-const routeTree = rootRoute.addChildren([IndexRoute, homeRoute]);
+const my_reservations_route = createRoute({
+  getParentRoute: () => home_route,
+  path: "/",
+  component: () => <MyReservations />,
+});
+
+const routeTree = rootRoute.addChildren([
+  index_route,
+  home_route.addChildren([my_reservations_route]),
+]);
 
 export const router = createRouter({ routeTree });
 
