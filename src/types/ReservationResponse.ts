@@ -1,5 +1,5 @@
 export type ReservationResponse = {
-  reservation_uuid: string;
+  rord_uuid: string;
   user: {
     user_id: string;
     name: string;

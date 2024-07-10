@@ -68,7 +68,7 @@ export const WeeklyMyReservations = () => {
                                   }
                                   onClick={async () => {
                                     if (z.user?.user_id === user.userId) {
-                                      await cancelHandler(z.reservation_uuid);
+                                      await cancelHandler(z.rord_uuid);
                                     }
                                   }}
                                 >
