@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "./route.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
 import "./index.css";
 
 const PUBLISHABLE_KEY =
@@ -18,5 +19,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <RouterProvider router={router} />
       </ClerkProvider>
     </QueryClientProvider>
+    <Toaster />
   </React.StrictMode>
 );
