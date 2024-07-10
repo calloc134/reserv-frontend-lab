@@ -5,14 +5,14 @@ import { useAuth } from "@clerk/clerk-react";
 export const useDeleteReservation = () => {
   const queryClient = useQueryClient();
 
-  const user = useAuth();
+  const { getToken } = useAuth();
 
   return useMutation({
     mutationFn: async (reservation_uuid: string) => {
       const result = (await reservFetch(`/reservations/${reservation_uuid}/`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${await user.getToken()}`,
+          Authorization: `Bearer ${await getToken()}`,
         },
       })) as { status: number; data: { message: string } };
 

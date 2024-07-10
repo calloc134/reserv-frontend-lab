@@ -1,7 +1,19 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { createTable } from "../utils/createTable";
 import { useAuth } from "@clerk/clerk-react";
 import { useGetWeeklyReservations } from "../hooks/useGetWeeklyReservations";
+import { getAvailableRooms } from "../utils/getAvailableRooms";
+import { RoomResponse } from "@/types/RoomResponse";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { numberToSlot, slot } from "@/types/ReservationResponse";
+import { useNewReservation } from "@/hooks/useNewReservation";
+import toast from "react-hot-toast";
 
 export const WeeklyReservations = () => {
   const { data, error } = useGetWeeklyReservations();
@@ -19,6 +31,17 @@ export const WeeklyReservations = () => {
   }, [data]);
 
   const user = useAuth();
+
+  const [availableRooms, setAvailableRooms] = useState<RoomResponse[]>([]);
+
+  const [isOpened, setIsOpened] = useState(false);
+
+  const [dialogConfig, setDialogConfig] = useState<{
+    date: Date;
+    slot: slot;
+  } | null>(null);
+
+  const { mutateAsync } = useNewReservation();
 
   return (
     <div className="flex flex-col gap-4">
@@ -40,7 +63,27 @@ export const WeeklyReservations = () => {
                 <div>
                   {x.reservations.map((y, i) => {
                     return (
-                      <div key={i} className="py-2 border-b last:border-none">
+                      <div
+                        key={i}
+                        className="py-2 border-b last:border-none cursor-pointer hover:bg-gray-100 rounded-md"
+                        onClick={async () => {
+                          const slot = numberToSlot(i + 1) || "first";
+                          const rooms = await getAvailableRooms(
+                            x.date,
+                            slot,
+                            await user.getToken()
+                          );
+                          console.debug(rooms);
+                          setAvailableRooms(rooms);
+
+                          setDialogConfig({
+                            date: x.date,
+                            slot: slot,
+                          });
+
+                          setIsOpened(true);
+                        }}
+                      >
                         {y.length > 0 ? (
                           <div className="text-gray-800 gap-2 flex items-center flex-col">
                             <span className="text-gray-600">{i + 1}限: </span>
@@ -78,6 +121,45 @@ export const WeeklyReservations = () => {
             );
           })}
         </div>
+        <AlertDialog open={isOpened} onOpenChange={setIsOpened}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>利用可能な部屋</AlertDialogTitle>
+              <AlertDialogDescription>
+                <div className="flex flex-col gap-4">
+                  <h1>予約する部屋を選択してください。</h1>
+                  {availableRooms.map((x) => {
+                    return (
+                      <div
+                        key={x.room_uuid}
+                        className="p-4 bg-white rounded-lg border-2 border-black cursor-pointer hover:bg-gray-100"
+                        onClick={async () => {
+                          try {
+                            await mutateAsync({
+                              room_uuid: x.room_uuid,
+                              slot: dialogConfig?.slot || "first",
+                              date: dialogConfig?.date || new Date(),
+                            });
+                          } catch (e) {
+                            toast.error((e as Error).message);
+                            return;
+                          }
+
+                          toast.success("予約しました。");
+                          setIsOpened(false);
+                        }}
+                      >
+                        <div className="text-center text-lg font-semibold text-gray-700 mb-4">
+                          {x.name}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );

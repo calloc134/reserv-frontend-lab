@@ -27,3 +27,16 @@ export const slotToNumber = (slot: slot): number => {
       return 4;
   }
 };
+
+export const numberToSlot = (num: number): slot | undefined => {
+  switch (num) {
+    case 1:
+      return "first";
+    case 2:
+      return "second";
+    case 3:
+      return "third";
+    case 4:
+      return "fourth";
+  }
+};
