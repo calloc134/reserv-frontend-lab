@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { GetWeeklyMyReservationsHook } from "../hooks/GetWeeklyMyReservationsHook";
-import { createTable } from "../types/createTable";
+import { createTable } from "../utils/createTable";
+import { useAuth } from "@clerk/clerk-react";
 
 export const WeeklyMyReservations = () => {
   const { data, error } = GetWeeklyMyReservationsHook();
@@ -16,6 +17,8 @@ export const WeeklyMyReservations = () => {
   const table_data = useMemo(() => {
     return createTable(data);
   }, [data]);
+
+  const user = useAuth();
 
   return (
     <div className="flex flex-col gap-4">
@@ -38,10 +41,31 @@ export const WeeklyMyReservations = () => {
                   {x.reservations.map((y, i) => {
                     return (
                       <div key={i} className="py-2 border-b last:border-none">
-                        {y ? (
-                          <div className="text-gray-800 gap-2 flex items-center">
+                        {y.length > 0 ? (
+                          <div className="text-gray-800 gap-2 flex items-center flex-col">
                             <span className="text-gray-600">{i + 1}限: </span>
-                            <span className="font-medium">{y.user?.name}</span>
+                            {y.map((z) => {
+                              return (
+                                <div className="text-gray-800 gap-2 flex items-center rounded-lg p-2 border-2 border-gray-300">
+                                  <span className="font-medium">
+                                    {z.room.name}:
+                                  </span>
+                                  {user.userId === z.user?.user_id ? (
+                                    <span className="text-red-500">
+                                      {z.user?.name} (自分)
+                                    </span>
+                                  ) : z.user === null ? (
+                                    <span className="text-gray-500">
+                                      利用不可
+                                    </span>
+                                  ) : (
+                                    <span className="font-medium">
+                                      {z.user?.name}
+                                    </span>
+                                  )}
+                                </div>
+                              );
+                            })}
                           </div>
                         ) : (
                           <div className="text-gray-500">{i + 1}限: 空き</div>

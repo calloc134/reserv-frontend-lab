@@ -4,7 +4,10 @@ export type ReservationResponse = {
     user_id: string;
     name: string;
   } | null;
-  room_uuid: string;
+  room: {
+    room_id: string;
+    name: string;
+  };
   slot: slot;
   date: Date;
 };
