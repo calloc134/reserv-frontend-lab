@@ -6,8 +6,10 @@ import { getAvailableRooms } from "../utils/getAvailableRooms";
 import { RoomResponse } from "@/types/RoomResponse";
 import {
   AlertDialog,
+  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
+  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
@@ -158,6 +160,11 @@ export const WeeklyReservations = () => {
                 </div>
               </AlertDialogDescription>
             </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setIsOpened(false)}>
+                キャンセル
+              </AlertDialogCancel>
+            </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       </div>
