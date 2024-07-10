@@ -20,7 +20,6 @@ export const HomeLayout = ({ children }: { children: React.ReactNode }) => {
               自分の予約(週)
             </div>
           </Link>
-          <div className="bg-slate-300 px-2 py-1 rounded-lg">予約する</div>
         </div>
         <div>
           <UserButton />
