@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { createTable } from "../utils/createTable";
 import { useAuth } from "@clerk/clerk-react";
-import { GetWeeklyReservationsHook } from "../hooks/GetWeeklyReservationsHook";
+import { useGetWeeklyReservations } from "../hooks/useGetWeeklyReservations";
 
 export const WeeklyReservations = () => {
-  const { data, error } = GetWeeklyReservationsHook();
+  const { data, error } = useGetWeeklyReservations();
 
   console.debug(data, error);
 

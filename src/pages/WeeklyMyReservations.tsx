@@ -1,12 +1,14 @@
 import { useMemo } from "react";
-import { GetWeeklyMyReservationsHook } from "../hooks/GetWeeklyMyReservationsHook";
+import { useGetWeeklyMyReservations } from "../hooks/useGetWeeklyMyReservations";
 import { createTable } from "../utils/createTable";
 import { useAuth } from "@clerk/clerk-react";
+import { useDeleteReservation } from "../hooks/useDeleteReservation";
+import toast from "react-hot-toast";
 
 export const WeeklyMyReservations = () => {
-  const { data, error } = GetWeeklyMyReservationsHook();
+  const { data } = useGetWeeklyMyReservations();
 
-  console.debug(data, error);
+  const { mutateAsync } = useDeleteReservation();
 
   // 予約一覧を作成する
   // start_dateからend_dateまでの日付を表示
@@ -19,6 +21,17 @@ export const WeeklyMyReservations = () => {
   }, [data]);
 
   const user = useAuth();
+
+  const cancelHandler = async (reservation_uuid: string) => {
+    try {
+      await mutateAsync(reservation_uuid);
+    } catch (error: unknown) {
+      toast.error("キャンセルに失敗しました: " + (error as Error).message);
+      return;
+    }
+
+    toast.success("キャンセルしました");
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -46,7 +59,19 @@ export const WeeklyMyReservations = () => {
                             <span className="text-gray-600">{i + 1}限: </span>
                             {y.map((z) => {
                               return (
-                                <div className="text-gray-800 gap-2 flex items-center rounded-lg p-2 border-2 border-gray-300">
+                                <div
+                                  className={
+                                    "text-gray-800 gap-2 flex items-center rounded-lg p-2 border-2 border-gray-300 " +
+                                    (z.user?.user_id === user.userId
+                                      ? " cursor-pointer hover:bg-red-100"
+                                      : "")
+                                  }
+                                  onClick={async () => {
+                                    if (z.user?.user_id === user.userId) {
+                                      await cancelHandler(z.reservation_uuid);
+                                    }
+                                  }}
+                                >
                                   <span className="font-medium">
                                     {z.room.name}:
                                   </span>

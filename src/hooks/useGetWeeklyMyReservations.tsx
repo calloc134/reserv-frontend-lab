@@ -7,7 +7,7 @@ import { ReservationResponseTransformed } from "../types/ReservationResponseTran
 import { convertToDate } from "../utils/convertToDate";
 
 // 内部的にtanstack queryを利用する
-export const GetWeeklyMyReservationsHook = () => {
+export const useGetWeeklyMyReservations = () => {
   const { getToken } = useAuth();
 
   // 呼び出しの形式はYYYY-MM-DD
@@ -38,21 +38,24 @@ export const GetWeeklyMyReservationsHook = () => {
           },
         }
       )) as {
-        reservations: ReservationResponseTransformed[];
-        start_date: string;
-        end_date: string;
+        status: number;
+        data: {
+          reservations: ReservationResponseTransformed[];
+          start_date: string;
+          end_date: string;
+        };
       };
 
-      const start_date_or = convertToDate(query_result.start_date);
+      const start_date_or = convertToDate(query_result.data.start_date);
       if (start_date_or.isErr()) {
         throw start_date_or.error;
       }
-      const end_date_or = convertToDate(query_result.end_date);
+      const end_date_or = convertToDate(query_result.data.end_date);
       if (end_date_or.isErr()) {
         throw end_date_or.error;
       }
       return {
-        reservations: query_result.reservations.map((x) => {
+        reservations: query_result.data.reservations.map((x) => {
           const date_or = convertToDate(x.date);
           if (date_or.isErr()) {
             throw date_or.error;
