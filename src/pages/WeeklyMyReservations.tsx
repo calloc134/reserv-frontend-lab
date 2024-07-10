@@ -1,9 +1,20 @@
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useGetWeeklyMyReservations } from "../hooks/useGetWeeklyMyReservations";
 import { createTable } from "../utils/createTable";
 import { useAuth } from "@clerk/clerk-react";
 import { useDeleteReservation } from "../hooks/useDeleteReservation";
 import toast from "react-hot-toast";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
+import { ReservationResponse, slotToNumber } from "@/types/ReservationResponse";
 
 export const WeeklyMyReservations = () => {
   const { data } = useGetWeeklyMyReservations();
@@ -21,6 +32,11 @@ export const WeeklyMyReservations = () => {
   }, [data]);
 
   const user = useAuth();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [dialogRord, setDialogRord] = useState<ReservationResponse | null>(
+    null
+  );
 
   const cancelHandler = async (reservation_uuid: string) => {
     try {
@@ -68,7 +84,9 @@ export const WeeklyMyReservations = () => {
                                   }
                                   onClick={async () => {
                                     if (z.user?.user_id === user.userId) {
-                                      await cancelHandler(z.rord_uuid);
+                                      console.debug(z.rord_uuid);
+                                      setDialogRord(z);
+                                      setIsOpen(true);
                                     }
                                   }}
                                 >
@@ -103,6 +121,60 @@ export const WeeklyMyReservations = () => {
             );
           })}
         </div>
+        <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>予約のキャンセル</AlertDialogTitle>
+              <AlertDialogDescription>
+                {dialogRord !== null ? (
+                  <div className="flex flex-col gap-4">
+                    <table className="table-auto w-full">
+                      <tbody>
+                        <tr>
+                          <td className="border px-4 py-2">日付</td>
+                          <td className="border px-4 py-2">
+                            {dialogRord.date.getMonth() + 1}月
+                            {dialogRord.date.getDate()}日
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="border px-4 py-2">時間</td>
+                          <td className="border px-4 py-2">
+                            {slotToNumber(dialogRord.slot)}限
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="border px-4 py-2">部屋</td>
+                          <td className="border px-4 py-2">
+                            {dialogRord.room.name}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div className="text-red-500 text-sm">
+                      この予定をキャンセルしますか？キャンセルすると元に戻せません。
+                    </div>
+                  </div>
+                ) : null}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setIsOpen(false)}>
+                今のナシ
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => {
+                  if (dialogRord !== null) {
+                    cancelHandler(dialogRord.rord_uuid);
+                    setIsOpen(false);
+                  }
+                }}
+              >
+                予約の取り消し
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );
