@@ -8,9 +8,13 @@ import {
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { LoginPage } from "./pages/LoginPage";
-import { MyReservations } from "./pages/MyReservations";
+import { WeeklyMyReservations } from "./pages/WeeklyMyReservations";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { HomeLayout } from "./components/HomeLayout";
+import { Suspense } from "react";
+import toast from "react-hot-toast";
+import { WeeklyReservations } from "./pages/WeeklyReservations";
+import { ClipLoader } from "react-spinners";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -27,6 +31,16 @@ const index_route = createRoute({
   component: () => <LoginPage />,
 });
 
+const not_found_route = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "*",
+  component: () => (
+    <div className="flex h-screen justify-center items-center">
+      404 Not Found
+    </div>
+  ),
+});
+
 const home_route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/home",
@@ -35,9 +49,11 @@ const home_route = createRoute({
 
     const navigate = useNavigate();
 
+    // 認証の判定
     useEffect(() => {
       if (!isSignedIn) {
-        console.error("User is not signed in");
+        toast.error("ログインしてください");
+        // リダイレクト
         navigate({
           to: "/",
         });
@@ -46,21 +62,38 @@ const home_route = createRoute({
 
     return (
       <HomeLayout>
-        <Outlet />
+        <Suspense
+          fallback={
+            <div className="flex h-screen justify-center items-center">
+              <div className="p-16 bg-white rounded-lg col-span-1 sm:col-span-2 md:col-span-2 border-2 border-black">
+                <ClipLoader color="#000" loading={true} size={50} />
+              </div>
+            </div>
+          }
+        >
+          <Outlet />
+        </Suspense>
       </HomeLayout>
     );
   },
 });
 
-const my_reservations_route = createRoute({
+const reservations_route = createRoute({
   getParentRoute: () => home_route,
   path: "/",
-  component: () => <MyReservations />,
+  component: () => <WeeklyReservations />,
+});
+
+const my_reservations_route = createRoute({
+  getParentRoute: () => home_route,
+  path: "/my_reservations",
+  component: () => <WeeklyMyReservations />,
 });
 
 const routeTree = rootRoute.addChildren([
   index_route,
-  home_route.addChildren([my_reservations_route]),
+  home_route.addChildren([reservations_route, my_reservations_route]),
+  not_found_route,
 ]);
 
 export const router = createRouter({ routeTree });
