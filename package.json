@@ -13,8 +13,11 @@
     "@clerk/clerk-react": "^5.2.7",
     "@tanstack/react-query": "^5.50.1",
     "@tanstack/react-router": "^1.43.14",
+    "neverthrow": "^6.2.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
+    "react-spinners": "^0.14.1"
   },
   "devDependencies": {
     "@tanstack/router-devtools": "^1.43.14",
