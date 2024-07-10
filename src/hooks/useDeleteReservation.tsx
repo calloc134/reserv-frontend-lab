@@ -25,7 +25,7 @@ export const useDeleteReservation = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["reservations", "weekly", "my-reservations"],
+        queryKey: ["reservations"],
       });
     },
   });

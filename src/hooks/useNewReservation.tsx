@@ -37,7 +37,7 @@ export const useNewReservation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["reservations", "weekly", "my-reservations"],
+        queryKey: ["reservations"],
       });
     },
   });
