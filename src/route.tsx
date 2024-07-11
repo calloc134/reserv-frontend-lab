@@ -20,7 +20,7 @@ const rootRoute = createRootRoute({
   component: () => (
     <div>
       <Outlet />
-      <TanStackRouterDevtools />
+      {import.meta.env.DEV && <TanStackRouterDevtools />}
     </div>
   ),
 });
