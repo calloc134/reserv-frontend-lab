@@ -42,7 +42,7 @@ export const WeeklyMyReservations = () => {
     try {
       await mutateAsync(reservation_uuid);
     } catch (error: unknown) {
-      toast.error("キャンセルに失敗しました: " + (error as Error).message);
+      toast.error("キャンセルに失敗しました。\n" + (error as Error).message);
       return;
     }
 

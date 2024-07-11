@@ -132,7 +132,7 @@ export const WeeklyReservations = () => {
               <AlertDialogTitle>利用可能な部屋</AlertDialogTitle>
               <AlertDialogDescription>
                 <div className="flex flex-col gap-4">
-                  <h1>予約する部屋を選択してください。</h1>
+                  <h1>この部屋で予約を行います。</h1>
                   {availableRooms === null ? (
                     <div className="p-4 bg-white rounded-lg flex justify-center">
                       <ClipLoader color="#000" loading={true} size={50} />
@@ -157,7 +157,11 @@ export const WeeklyReservations = () => {
                                 date: dialogConfig?.date || new Date(),
                               });
                             } catch (e) {
-                              toast.error((e as Error).message);
+                              toast.error(
+                                "エラーが発生しました。\n" +
+                                  (e as Error).message ||
+                                  "エラーが発生しました。"
+                              );
                               return;
                             }
 
