@@ -1,5 +1,4 @@
 import { UserButton } from "@clerk/clerk-react";
-import { Link } from "@tanstack/react-router";
 
 export const HomeLayout = ({ children }: { children: React.ReactNode }) => {
   return (
