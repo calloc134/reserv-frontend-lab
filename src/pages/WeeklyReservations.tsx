@@ -17,9 +17,12 @@ import { numberToSlot, slot } from "@/types/ReservationResponse";
 import { useNewReservation } from "@/hooks/useNewReservation";
 import toast from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
+import { getMondayOfThisWeek } from "@/utils/getMondayOfWeek";
+import { Button } from "@/components/ui/button";
 
 export const WeeklyReservations = () => {
-  const { data, error } = useGetWeeklyReservations();
+  const [startDate, setStartDate] = useState(getMondayOfThisWeek());
+  const { data, error } = useGetWeeklyReservations(startDate);
 
   console.debug(data, error);
 
@@ -50,8 +53,64 @@ export const WeeklyReservations = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-center">
+      <div className="flex justify-center flex-row gap-4">
+        <Button
+          variant={"secondary"}
+          onClick={() =>
+            setStartDate(
+              new Date(
+                startDate.getFullYear(),
+                startDate.getMonth(),
+                startDate.getDate() - 7
+              )
+            )
+          }
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="icon icon-tabler icon-tabler-caret-left"
+            width="44"
+            height="44"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="#2c3e50"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M14 6l-6 6l6 6v-12" />
+          </svg>
+        </Button>
         <h1 className="text-3xl font-bold text-gray-800">予約一覧(週)</h1>
+        <Button
+          variant={"secondary"}
+          onClick={() =>
+            setStartDate(
+              new Date(
+                startDate.getFullYear(),
+                startDate.getMonth(),
+                startDate.getDate() + 7
+              )
+            )
+          }
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="icon icon-tabler icon-tabler-caret-right"
+            width="44"
+            height="44"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="#2c3e50"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M10 18l6 -6l-6 -6v12" />
+          </svg>
+        </Button>
       </div>
       <div className="flex justify-center">
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-10 gap-4 w-full justify-center">

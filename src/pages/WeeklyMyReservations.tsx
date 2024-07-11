@@ -15,9 +15,13 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { ReservationResponse, slotToNumber } from "@/types/ReservationResponse";
+import { getMondayOfThisWeek } from "@/utils/getMondayOfWeek";
+import { Button } from "@/components/ui/button";
 
 export const WeeklyMyReservations = () => {
-  const { data } = useGetWeeklyMyReservations();
+  const [startDate, setStartDate] = useState(getMondayOfThisWeek());
+
+  const { data } = useGetWeeklyMyReservations(startDate);
 
   const { mutateAsync } = useDeleteReservation();
 
@@ -51,8 +55,34 @@ export const WeeklyMyReservations = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-center">
+      <div className="flex justify-center flex-row gap-4">
+        <Button
+          onClick={() =>
+            setStartDate(
+              new Date(
+                startDate.getFullYear(),
+                startDate.getMonth(),
+                startDate.getDate() - 7
+              )
+            )
+          }
+        >
+          前の週
+        </Button>
         <h1 className="text-3xl font-bold text-gray-800">自分の予約一覧(週)</h1>
+        <Button
+          onClick={() =>
+            setStartDate(
+              new Date(
+                startDate.getFullYear(),
+                startDate.getMonth(),
+                startDate.getDate() + 7
+              )
+            )
+          }
+        >
+          次の週
+        </Button>
       </div>
       <div className="flex justify-center">
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-10 gap-4 w-full justify-center">

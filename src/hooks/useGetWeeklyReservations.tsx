@@ -1,17 +1,15 @@
 import { useAuth } from "@clerk/clerk-react";
 import { reservFetch } from "../utils/reservFetch";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { getMondayOfThisWeek } from "../utils/getMondayOfWeek";
 import { convertFromDate } from "../utils/convertFromDate";
 import { ReservationResponseTransformed } from "../types/ReservationResponseTransformed";
 import { convertToDate } from "../utils/convertToDate";
 
 // 内部的にtanstack queryを利用する
-export const useGetWeeklyReservations = () => {
+export const useGetWeeklyReservations = (start_date: Date) => {
   const { getToken } = useAuth();
 
   // 呼び出しの形式はYYYY-MM-DD
-  const start_date = getMondayOfThisWeek();
   const end_date = new Date(
     start_date.getFullYear(),
     start_date.getMonth(),
