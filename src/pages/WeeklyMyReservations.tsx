@@ -17,12 +17,19 @@ import {
 import { ReservationResponse, slotToNumber } from "@/types/ReservationResponse";
 import { getMondayOfThisWeek } from "@/utils/getMondayOfWeek";
 import { Button } from "@/components/ui/button";
-import { Link } from "@tanstack/react-router";
+import { Link, useSearch } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
+import { convertToDate } from "@/utils/convertToDate";
+import { convertFromDate } from "@/utils/convertFromDate";
 
 export const WeeklyMyReservations = () => {
-  const [startDate, setStartDate] = useState(getMondayOfThisWeek());
+  const { start_date: start_date_param } = useSearch({ strict: false });
+  const start_date = start_date_param
+    ? convertToDate(start_date_param).unwrapOr(getMondayOfThisWeek())
+    : getMondayOfThisWeek();
+  const navigate = useNavigate();
 
-  const { data } = useGetWeeklyMyReservations(startDate);
+  const { data } = useGetWeeklyMyReservations(start_date);
 
   const { mutateAsync } = useDeleteReservation();
 
@@ -61,6 +68,7 @@ export const WeeklyMyReservations = () => {
       <div className="flex justify-center">
         <div className="flex w-1/2  flex-row gap-4 justify-center">
           <Link
+            search={{ start_date: convertFromDate(start_date) }}
             to="/home"
             className="p-2 rounded-lg border-2 border-black w-1/2 text-center bg-gray-200 hover:bg-gray-100 cursor-pointer"
           >
@@ -77,13 +85,18 @@ export const WeeklyMyReservations = () => {
           <Button
             variant={"secondary"}
             onClick={() =>
-              setStartDate(
-                new Date(
-                  startDate.getFullYear(),
-                  startDate.getMonth(),
-                  startDate.getDate() - 7
-                )
-              )
+              navigate({
+                to: "/home/my_reservations",
+                search: {
+                  start_date: convertFromDate(
+                    new Date(
+                      start_date.getFullYear(),
+                      start_date.getMonth(),
+                      start_date.getDate() - 7
+                    )
+                  ),
+                },
+              })
             }
           >
             <svg
@@ -108,13 +121,18 @@ export const WeeklyMyReservations = () => {
           <Button
             variant={"secondary"}
             onClick={() =>
-              setStartDate(
-                new Date(
-                  startDate.getFullYear(),
-                  startDate.getMonth(),
-                  startDate.getDate() + 7
-                )
-              )
+              navigate({
+                to: "/home/my_reservations",
+                search: {
+                  start_date: convertFromDate(
+                    new Date(
+                      start_date.getFullYear(),
+                      start_date.getMonth(),
+                      start_date.getDate() + 7
+                    )
+                  ),
+                },
+              })
             }
           >
             <svg

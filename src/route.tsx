@@ -82,12 +82,28 @@ const reservations_route = createRoute({
   getParentRoute: () => home_route,
   path: "/",
   component: () => <WeeklyReservations />,
+  validateSearch: (search: Record<string, unknown>) => {
+    // string型なら
+    const start_date =
+      typeof search.start_date === "string" ? search.start_date : undefined;
+    return {
+      start_date,
+    };
+  },
 });
 
 const my_reservations_route = createRoute({
   getParentRoute: () => home_route,
   path: "/my_reservations",
   component: () => <WeeklyMyReservations />,
+  validateSearch: (search: Record<string, unknown>) => {
+    // string型なら
+    const start_date =
+      typeof search.start_date === "string" ? search.start_date : undefined;
+    return {
+      start_date,
+    };
+  },
 });
 
 const routeTree = rootRoute.addChildren([
