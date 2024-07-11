@@ -142,6 +142,7 @@ export const WeeklyMyReservations = () => {
                             {y.map((z) => {
                               return (
                                 <div
+                                  key={z.rord_uuid}
                                   className={
                                     "text-gray-800 gap-2 flex items-center rounded-lg p-2 border-2 border-gray-300 " +
                                     (z.user?.user_id === user.userId

@@ -155,7 +155,10 @@ export const WeeklyReservations = () => {
                             <span className="text-gray-600">{i + 1}限: </span>
                             {y.map((z) => {
                               return (
-                                <div className="text-gray-800 gap-2 flex items-center rounded-lg p-2 border-2 border-gray-300">
+                                <div
+                                  key={z.rord_uuid}
+                                  className="text-gray-800 gap-2 flex items-center rounded-lg p-2 border-2 border-gray-300"
+                                >
                                   <span className="font-medium">
                                     {z.room.name}:
                                   </span>
