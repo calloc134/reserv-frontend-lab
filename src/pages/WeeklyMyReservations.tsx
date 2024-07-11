@@ -129,7 +129,7 @@ export const WeeklyMyReservations = () => {
                 {dialogRord !== null ? (
                   <div className="flex flex-col gap-4">
                     <table className="table-auto w-full">
-                      <tbody>
+                      <tbody className="text-black">
                         <tr>
                           <td className="border px-4 py-2">日付</td>
                           <td className="border px-4 py-2">
