@@ -30,7 +30,7 @@ export const WeeklyReservations = () => {
     : getMondayOfThisWeek();
   const navigate = useNavigate();
 
-  const { data, error } = useGetWeeklyReservations(start_date);
+  const { data } = useGetWeeklyReservations(start_date);
 
   // 予約一覧を作成する
   // start_dateからend_dateまでの日付を表示
