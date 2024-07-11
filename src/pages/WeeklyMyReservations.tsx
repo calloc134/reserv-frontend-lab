@@ -184,7 +184,6 @@ export const WeeklyMyReservations = () => {
                                   }
                                   onClick={async () => {
                                     if (z.user?.user_id === user.userId) {
-                                      console.debug(z.rord_uuid);
                                       setDialogRord(z);
                                       setIsOpen(true);
                                     }

@@ -32,8 +32,6 @@ export const WeeklyReservations = () => {
 
   const { data, error } = useGetWeeklyReservations(start_date);
 
-  console.debug(data, error);
-
   // 予約一覧を作成する
   // start_dateからend_dateまでの日付を表示
   // 時間割の形式となる
@@ -174,7 +172,6 @@ export const WeeklyReservations = () => {
                             slot,
                             await user.getToken()
                           );
-                          console.debug(rooms);
                           setAvailableRooms(rooms);
 
                           setDialogConfig({
