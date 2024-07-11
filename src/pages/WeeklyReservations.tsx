@@ -55,6 +55,17 @@ export const WeeklyReservations = () => {
 
   return (
     <div className="flex flex-col gap-4">
+      <div className="flex justify-center">
+        <div className="flex w-1/2  flex-row gap-4 justify-center">
+          <div className="p-2 bg-white rounded-lg border-2 border-black w-1/2 text-center">
+            予約一覧(週)
+          </div>
+          <div className="p-2 rounded-lg border-2 border-black w-1/2 text-center bg-gray-200 hover:bg-gray-100 cursor-pointer">
+            自分の予約一覧(週)
+          </div>
+        </div>
+      </div>
+
       <div className="flex justify-center flex-row gap-4">
         <Button
           variant={"secondary"}

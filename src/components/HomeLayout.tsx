@@ -9,17 +9,6 @@ export const HomeLayout = ({ children }: { children: React.ReactNode }) => {
           <Link to="/home">
             <h1 className="text-2xl font-bold">部室予約サイト</h1>
           </Link>
-
-          <Link to="/home">
-            <div className="bg-slate-300 px-2 py-1 rounded-lg">
-              全ての予約(週)
-            </div>
-          </Link>
-          <Link to="/home/my_reservations">
-            <div className="bg-slate-300 px-2 py-1 rounded-lg">
-              自分の予約(週)
-            </div>
-          </Link>
         </div>
         <div>
           <UserButton />
