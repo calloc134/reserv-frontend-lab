@@ -16,6 +16,7 @@ import {
 import { numberToSlot, slot } from "@/types/ReservationResponse";
 import { useNewReservation } from "@/hooks/useNewReservation";
 import toast from "react-hot-toast";
+import { ClipLoader } from "react-spinners";
 
 export const WeeklyReservations = () => {
   const { data, error } = useGetWeeklyReservations();
@@ -34,7 +35,9 @@ export const WeeklyReservations = () => {
 
   const user = useAuth();
 
-  const [availableRooms, setAvailableRooms] = useState<RoomResponse[]>([]);
+  const [availableRooms, setAvailableRooms] = useState<RoomResponse[] | null>(
+    null
+  );
 
   const [isOpened, setIsOpened] = useState(false);
 
@@ -69,6 +72,8 @@ export const WeeklyReservations = () => {
                         key={i}
                         className="py-2 border-b last:border-none cursor-pointer hover:bg-gray-100 rounded-md"
                         onClick={async () => {
+                          setAvailableRooms(null);
+                          setIsOpened(true);
                           const slot = numberToSlot(i + 1) || "first";
                           const rooms = await getAvailableRooms(
                             x.date,
@@ -82,8 +87,6 @@ export const WeeklyReservations = () => {
                             date: x.date,
                             slot: slot,
                           });
-
-                          setIsOpened(true);
                         }}
                       >
                         {y.length > 0 ? (
@@ -130,33 +133,45 @@ export const WeeklyReservations = () => {
               <AlertDialogDescription>
                 <div className="flex flex-col gap-4">
                   <h1>予約する部屋を選択してください。</h1>
-                  {availableRooms.map((x) => {
-                    return (
-                      <div
-                        key={x.room_uuid}
-                        className="p-4 bg-white rounded-lg border-2 border-black cursor-pointer hover:bg-gray-100"
-                        onClick={async () => {
-                          try {
-                            await mutateAsync({
-                              room_uuid: x.room_uuid,
-                              slot: dialogConfig?.slot || "first",
-                              date: dialogConfig?.date || new Date(),
-                            });
-                          } catch (e) {
-                            toast.error((e as Error).message);
-                            return;
-                          }
-
-                          toast.success("予約しました。");
-                          setIsOpened(false);
-                        }}
-                      >
-                        <div className="text-center text-lg font-semibold text-gray-700 mb-4">
-                          {x.name}
-                        </div>
+                  {availableRooms === null ? (
+                    <div className="p-4 bg-white rounded-lg flex justify-center">
+                      <ClipLoader color="#000" loading={true} size={50} />
+                    </div>
+                  ) : availableRooms.length === 0 ? (
+                    <div className="p-4 bg-white rounded-lg border-2 border-black">
+                      <div className="text-center text-lg font-semibold text-gray-700 mb-4">
+                        利用可能な部屋がありません。
                       </div>
-                    );
-                  })}
+                    </div>
+                  ) : (
+                    availableRooms.map((x) => {
+                      return (
+                        <div
+                          key={x.room_uuid}
+                          className="p-4 bg-white rounded-lg border-2 border-black cursor-pointer hover:bg-gray-100"
+                          onClick={async () => {
+                            try {
+                              await mutateAsync({
+                                room_uuid: x.room_uuid,
+                                slot: dialogConfig?.slot || "first",
+                                date: dialogConfig?.date || new Date(),
+                              });
+                            } catch (e) {
+                              toast.error((e as Error).message);
+                              return;
+                            }
+
+                            toast.success("予約しました。");
+                            setIsOpened(false);
+                          }}
+                        >
+                          <div className="text-center text-lg font-semibold text-gray-700 mb-4">
+                            {x.name}
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
                 </div>
               </AlertDialogDescription>
             </AlertDialogHeader>
