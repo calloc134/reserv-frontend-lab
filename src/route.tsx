@@ -45,13 +45,13 @@ const home_route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/home",
   component: () => {
-    const { isSignedIn } = useAuth();
+    const { isSignedIn, isLoaded } = useAuth();
 
     const navigate = useNavigate();
 
     // 認証の判定
     useEffect(() => {
-      if (!isSignedIn) {
+      if (!isSignedIn && isLoaded) {
         toast.error("ログインしてください");
         // リダイレクト
         navigate({
