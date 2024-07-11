@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { createTable } from "../utils/createTable";
 import { useAuth } from "@clerk/clerk-react";
 import { useGetWeeklyReservations } from "../hooks/useGetWeeklyReservations";
@@ -32,9 +32,11 @@ export const WeeklyReservations = () => {
   // 時間割は平日のみ、コマは四限まで
   // 予約がある場合は、その予約を表示する
 
-  const table_data = useMemo(() => {
+  const createTableCallback = useCallback(() => {
     return createTable(data);
   }, [data]);
+
+  const table_data = useMemo(createTableCallback, [createTableCallback]);
 
   const user = useAuth();
 
