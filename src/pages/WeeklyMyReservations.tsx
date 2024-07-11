@@ -17,6 +17,7 @@ import {
 import { ReservationResponse, slotToNumber } from "@/types/ReservationResponse";
 import { getMondayOfThisWeek } from "@/utils/getMondayOfWeek";
 import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 
 export const WeeklyMyReservations = () => {
   const [startDate, setStartDate] = useState(getMondayOfThisWeek());
@@ -59,9 +60,12 @@ export const WeeklyMyReservations = () => {
     <div className="flex flex-col gap-4">
       <div className="flex justify-center">
         <div className="flex w-1/2  flex-row gap-4 justify-center">
-          <div className="p-2 rounded-lg border-2 border-black w-1/2 text-center bg-gray-200 hover:bg-gray-100 cursor-pointer">
+          <Link
+            to="/home"
+            className="p-2 rounded-lg border-2 border-black w-1/2 text-center bg-gray-200 hover:bg-gray-100 cursor-pointer"
+          >
             予約一覧(週)
-          </div>
+          </Link>
           <div className="p-2 bg-white rounded-lg border-2 border-black w-1/2 text-center">
             自分の予約一覧(週)
           </div>

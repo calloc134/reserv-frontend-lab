@@ -19,6 +19,7 @@ import toast from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
 import { getMondayOfThisWeek } from "@/utils/getMondayOfWeek";
 import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 
 export const WeeklyReservations = () => {
   const [startDate, setStartDate] = useState(getMondayOfThisWeek());
@@ -60,9 +61,12 @@ export const WeeklyReservations = () => {
           <div className="p-2 bg-white rounded-lg border-2 border-black w-1/2 text-center">
             予約一覧(週)
           </div>
-          <div className="p-2 rounded-lg border-2 border-black w-1/2 text-center bg-gray-200 hover:bg-gray-100 cursor-pointer">
+          <Link
+            to="/home/my_reservations"
+            className="p-2 rounded-lg border-2 border-black w-1/2 text-center bg-gray-200 hover:bg-gray-100 cursor-pointer"
+          >
             自分の予約一覧(週)
-          </div>
+          </Link>
         </div>
       </div>
 
