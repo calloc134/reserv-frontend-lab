@@ -215,6 +215,7 @@ export const WeeklyReservations = () => {
                           className="p-4 bg-white rounded-lg border-2 border-black cursor-pointer hover:bg-gray-100"
                           onClick={async () => {
                             try {
+                              setAvailableRooms(null);
                               await mutateAsync({
                                 room_uuid: x.room_uuid,
                                 slot: dialogConfig?.slot || "first",
@@ -226,6 +227,7 @@ export const WeeklyReservations = () => {
                                   (e as Error).message ||
                                   "エラーが発生しました。"
                               );
+                              setIsOpened(false);
                               return;
                             }
 
