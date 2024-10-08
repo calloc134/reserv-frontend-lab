@@ -15,6 +15,7 @@ import { Suspense } from "react";
 import toast from "react-hot-toast";
 import { WeeklyReservations } from "./pages/WeeklyReservations";
 import { ClipLoader } from "react-spinners";
+import { AdminPanel } from "./pages/AdminPanel";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -114,9 +115,26 @@ const my_reservations_route = createRoute({
   },
 });
 
+const admin_route = createRoute({
+  getParentRoute: () => home_route,
+  path: "/admin-this-is-a-secret",
+  component: () => <AdminPanel />,
+  validateSearch: (search: Record<string, unknown>) => {
+    const start_date =
+      typeof search.start_date === "string" ? search.start_date : undefined;
+    return {
+      start_date,
+    };
+  },
+});
+
 const routeTree = rootRoute.addChildren([
   index_route,
-  home_route.addChildren([reservations_route, my_reservations_route]),
+  home_route.addChildren([
+    reservations_route,
+    my_reservations_route,
+    admin_route,
+  ]),
   not_found_route,
 ]);
 
