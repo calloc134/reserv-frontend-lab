@@ -4,15 +4,8 @@ import {
   createRootRoute,
   Outlet,
 } from "@tanstack/react-router";
-import { LoginPage } from "./pages/LoginPage";
-import { WeeklyMyReservations } from "./pages/WeeklyMyReservations";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { WeeklyReservations } from "./pages/WeeklyReservations";
-import { AdminPanel } from "./pages/AdminPanel";
-import { LoadingFallback } from "./components/LoadingFallback";
 import { validateDateString } from "./utils/validateDateString";
-import { AuthenticateLayoutPage } from "./pages/AuthenticateLayoutPage";
-import { NotFound } from "./components/NotFound";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -26,48 +19,39 @@ const rootRoute = createRootRoute({
 const index_route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
-  component: () => <LoginPage />,
-});
+}).lazy(() => import("./routes/IndexRoute").then((m) => m.IndexRoute));
 
 const not_found_route = createRoute({
   getParentRoute: () => rootRoute,
   path: "*",
-  component: () => <NotFound />,
-});
+}).lazy(() => import("./routes/NotFoundRoute").then((m) => m.NotFoundRoute));
 
 const home_route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/home",
-  component: () => (
-    <AuthenticateLayoutPage>
-      <Outlet />
-    </AuthenticateLayoutPage>
-  ),
-});
+}).lazy(() => import("./routes/HomeRoute").then((m) => m.HomeRoute));
 
 const reservations_route = createRoute({
   getParentRoute: () => home_route,
   path: "/",
-  component: () => <WeeklyReservations />,
-  pendingComponent: () => <LoadingFallback />,
   validateSearch: validateDateString,
-});
+}).lazy(() =>
+  import("./routes/ReservationsRoute").then((m) => m.ReservationsRoute)
+);
 
 const my_reservations_route = createRoute({
   getParentRoute: () => home_route,
   path: "/my_reservations",
-  component: () => <WeeklyMyReservations />,
-  pendingComponent: () => <LoadingFallback />,
   validateSearch: validateDateString,
-});
+}).lazy(() =>
+  import("./routes/MyReservationsRoute").then((m) => m.MyReservationsRoute)
+);
 
 const admin_route = createRoute({
   getParentRoute: () => home_route,
   path: "/admin-this-is-a-secret",
-  component: () => <AdminPanel />,
-  pendingComponent: () => <LoadingFallback />,
   validateSearch: validateDateString,
-});
+}).lazy(() => import("./routes/AdminRoute").then((m) => m.AdminRoute));
 
 const routeTree = rootRoute.addChildren([
   index_route,
