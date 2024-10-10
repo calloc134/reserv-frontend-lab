@@ -21,12 +21,11 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate, useSearch } from "@tanstack/react-router";
 
 export const WeeklyReservations = () => {
-  const { start_date: start_date_param } = useSearch({ from: "/home/" });
-  // console.debug(start_date_param);
+  const { start_date } = useSearch({ from: "/home/" });
 
   const navigate = useNavigate();
 
-  const { data } = useGetWeeklyReservations(start_date_param);
+  const { data } = useGetWeeklyReservations(start_date);
 
   // 予約一覧を作成する
   // start_dateからend_dateまでの日付を表示
@@ -64,7 +63,7 @@ export const WeeklyReservations = () => {
           </div>
           <Link
             // search={{ start_date: convertFromDate(start_date) }}
-            search={{ start_date: start_date_param }}
+            search={{ start_date: start_date }}
             to="/home/my_reservations"
             className="p-2 rounded-lg border-2 border-black w-1/2 text-center bg-gray-200 hover:bg-gray-100 cursor-pointer"
           >
@@ -81,9 +80,9 @@ export const WeeklyReservations = () => {
               to: "/home",
               search: {
                 start_date: new Date(
-                  start_date_param.getFullYear(),
-                  start_date_param.getMonth(),
-                  start_date_param.getDate() - 7
+                  start_date.getFullYear(),
+                  start_date.getMonth(),
+                  start_date.getDate() - 7
                 ),
               },
             })
@@ -113,9 +112,9 @@ export const WeeklyReservations = () => {
               to: "/home",
               search: {
                 start_date: new Date(
-                  start_date_param.getFullYear(),
-                  start_date_param.getMonth(),
-                  start_date_param.getDate() + 7
+                  start_date.getFullYear(),
+                  start_date.getMonth(),
+                  start_date.getDate() + 7
                 ),
               },
             })

@@ -20,12 +20,12 @@ import { numberToSlot, slot } from "@/types/dto/ReservationResponse";
 import toast from "react-hot-toast";
 
 export const AdminPanel = () => {
-  const { start_date: start_date_param } = useSearch({
+  const { start_date } = useSearch({
     from: "/home/admin-this-is-a-secret",
   });
   const navigate = useNavigate();
 
-  const { data } = useGetWeeklyReservations(start_date_param);
+  const { data } = useGetWeeklyReservations(start_date);
   const { data: room_data } = useGetRooms();
 
   const createTableCallback = useCallback(() => {
@@ -59,9 +59,9 @@ export const AdminPanel = () => {
               to: "/home/admin-this-is-a-secret",
               search: {
                 start_date: new Date(
-                  start_date_param.getFullYear(),
-                  start_date_param.getMonth(),
-                  start_date_param.getDate() - 7
+                  start_date.getFullYear(),
+                  start_date.getMonth(),
+                  start_date.getDate() - 7
                 ),
               },
             })
@@ -91,9 +91,9 @@ export const AdminPanel = () => {
               to: "/home/admin-this-is-a-secret",
               search: {
                 start_date: new Date(
-                  start_date_param.getFullYear(),
-                  start_date_param.getMonth(),
-                  start_date_param.getDate() + 7
+                  start_date.getFullYear(),
+                  start_date.getMonth(),
+                  start_date.getDate() + 7
                 ),
               },
             })
