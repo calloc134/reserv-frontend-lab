@@ -64,9 +64,7 @@ const home_route = createRoute({
 
     return (
       <HomeLayout>
-        <Suspense fallback={<LoadingFallback />}>
-          <Outlet />
-        </Suspense>
+        <Outlet />
       </HomeLayout>
     );
   },
@@ -76,6 +74,7 @@ const reservations_route = createRoute({
   getParentRoute: () => home_route,
   path: "/",
   component: () => <WeeklyReservations />,
+  pendingComponent: () => <LoadingFallback />,
   validateSearch: validateDateString,
 });
 
