@@ -16,7 +16,7 @@ import toast from "react-hot-toast";
 import { WeeklyReservations } from "./pages/WeeklyReservations";
 import { AdminPanel } from "./pages/AdminPanel";
 import { LoadingFallback } from "./components/LoadingFallback";
-import { getMondayOfThisWeek } from "./utils/getMondayOfThisWeek";
+import { validateDateString } from "./utils/validateDateString";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -76,72 +76,21 @@ const reservations_route = createRoute({
   getParentRoute: () => home_route,
   path: "/",
   component: () => <WeeklyReservations />,
-  validateSearch: (search: Record<string, unknown>) => {
-    if (!search.start_date) {
-      const today = new Date();
-      const monday = getMondayOfThisWeek(today);
-      return {
-        start_date: monday,
-      };
-    }
-
-    if (typeof search.start_date === "string") {
-      const date = new Date(search.start_date);
-      return {
-        start_date: date,
-      };
-    }
-
-    throw new Error("Invalid search");
-  },
+  validateSearch: validateDateString,
 });
 
 const my_reservations_route = createRoute({
   getParentRoute: () => home_route,
   path: "/my_reservations",
   component: () => <WeeklyMyReservations />,
-  validateSearch: (search: Record<string, unknown>) => {
-    if (!search.start_date) {
-      const today = new Date();
-      const monday = getMondayOfThisWeek(today);
-      return {
-        start_date: monday,
-      };
-    }
-
-    if (typeof search.start_date === "string") {
-      const date = new Date(search.start_date);
-      return {
-        start_date: date,
-      };
-    }
-
-    throw new Error("Invalid search");
-  },
+  validateSearch: validateDateString,
 });
 
 const admin_route = createRoute({
   getParentRoute: () => home_route,
   path: "/admin-this-is-a-secret",
   component: () => <AdminPanel />,
-  validateSearch: (search: Record<string, unknown>) => {
-    if (!search.start_date) {
-      const today = new Date();
-      const monday = getMondayOfThisWeek(today);
-      return {
-        start_date: monday,
-      };
-    }
-
-    if (typeof search.start_date === "string") {
-      const date = new Date(search.start_date);
-      return {
-        start_date: date,
-      };
-    }
-
-    throw new Error("Invalid search");
-  },
+  validateSearch: validateDateString,
 });
 
 const routeTree = rootRoute.addChildren([
