@@ -57,6 +57,7 @@ const my_reservations_route = createRoute({
   getParentRoute: () => home_route,
   path: "/my_reservations",
   component: () => <WeeklyMyReservations />,
+  pendingComponent: () => <LoadingFallback />,
   validateSearch: validateDateString,
 });
 
@@ -64,6 +65,7 @@ const admin_route = createRoute({
   getParentRoute: () => home_route,
   path: "/admin-this-is-a-secret",
   component: () => <AdminPanel />,
+  pendingComponent: () => <LoadingFallback />,
   validateSearch: validateDateString,
 });
 
