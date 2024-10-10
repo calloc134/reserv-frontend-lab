@@ -14,8 +14,9 @@ import { HomeLayout } from "./components/HomeLayout";
 import { Suspense } from "react";
 import toast from "react-hot-toast";
 import { WeeklyReservations } from "./pages/WeeklyReservations";
-import { ClipLoader } from "react-spinners";
 import { AdminPanel } from "./pages/AdminPanel";
+import { LoadingFallback } from "./components/LoadingFallback";
+import { getMondayOfThisWeek } from "./utils/getMondayOfThisWeek";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -63,23 +64,7 @@ const home_route = createRoute({
 
     return (
       <HomeLayout>
-        <Suspense
-          fallback={
-            <div className="flex h-screen justify-top items-center flex-col gap-4">
-              <div className="flex w-1/2  flex-row gap-4 justify-center">
-                <div className="p-2 rounded-lg border-2 border-black w-1/2 text-center bg-gray-200">
-                  予約一覧(週)
-                </div>
-                <div className="p-2 rounded-lg border-2 border-black w-1/2 text-center bg-gray-200">
-                  自分の予約一覧(週)
-                </div>
-              </div>
-              <div className="p-16 bg-white rounded-lg col-span-1 sm:col-span-2 md:col-span-2 border-2 border-black">
-                <ClipLoader color="#000" loading={true} size={50} />
-              </div>
-            </div>
-          }
-        >
+        <Suspense fallback={<LoadingFallback />}>
           <Outlet />
         </Suspense>
       </HomeLayout>
@@ -92,12 +77,22 @@ const reservations_route = createRoute({
   path: "/",
   component: () => <WeeklyReservations />,
   validateSearch: (search: Record<string, unknown>) => {
-    // string型なら
-    const start_date =
-      typeof search.start_date === "string" ? search.start_date : undefined;
-    return {
-      start_date,
-    };
+    if (!search.start_date) {
+      const today = new Date();
+      const monday = getMondayOfThisWeek(today);
+      return {
+        start_date: monday,
+      };
+    }
+
+    if (typeof search.start_date === "string") {
+      const date = new Date(search.start_date);
+      return {
+        start_date: date,
+      };
+    }
+
+    throw new Error("Invalid search");
   },
 });
 
@@ -106,12 +101,22 @@ const my_reservations_route = createRoute({
   path: "/my_reservations",
   component: () => <WeeklyMyReservations />,
   validateSearch: (search: Record<string, unknown>) => {
-    // string型なら
-    const start_date =
-      typeof search.start_date === "string" ? search.start_date : undefined;
-    return {
-      start_date,
-    };
+    if (!search.start_date) {
+      const today = new Date();
+      const monday = getMondayOfThisWeek(today);
+      return {
+        start_date: monday,
+      };
+    }
+
+    if (typeof search.start_date === "string") {
+      const date = new Date(search.start_date);
+      return {
+        start_date: date,
+      };
+    }
+
+    throw new Error("Invalid search");
   },
 });
 
@@ -120,11 +125,22 @@ const admin_route = createRoute({
   path: "/admin-this-is-a-secret",
   component: () => <AdminPanel />,
   validateSearch: (search: Record<string, unknown>) => {
-    const start_date =
-      typeof search.start_date === "string" ? search.start_date : undefined;
-    return {
-      start_date,
-    };
+    if (!search.start_date) {
+      const today = new Date();
+      const monday = getMondayOfThisWeek(today);
+      return {
+        start_date: monday,
+      };
+    }
+
+    if (typeof search.start_date === "string") {
+      const date = new Date(search.start_date);
+      return {
+        start_date: date,
+      };
+    }
+
+    throw new Error("Invalid search");
   },
 });
 

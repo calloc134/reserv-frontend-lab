@@ -1,8 +1,6 @@
 import { useSearch } from "@tanstack/react-router";
 import { useNavigate } from "@tanstack/react-router";
-import { convertToDate } from "@/utils/convertToDate";
 import { convertFromDate } from "@/utils/convertFromDate";
-import { getMondayOfThisWeek } from "@/utils/getMondayOfWeek";
 import { useCreateDisabled } from "@/hooks/useCreateDisabled";
 import { useGetWeeklyReservations } from "@/hooks/useGetWeeklyReservations";
 import { createTable } from "@/utils/createTable";
@@ -18,19 +16,16 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useGetRooms } from "@/hooks/useGetRooms";
-import { numberToSlot, slot } from "@/types/ReservationResponse";
+import { numberToSlot, slot } from "@/types/dto/ReservationResponse";
 import toast from "react-hot-toast";
 
 export const AdminPanel = () => {
   const { start_date: start_date_param } = useSearch({
     from: "/home/admin-this-is-a-secret",
   });
-  const start_date = start_date_param
-    ? convertToDate(start_date_param).unwrapOr(getMondayOfThisWeek())
-    : getMondayOfThisWeek();
   const navigate = useNavigate();
 
-  const { data } = useGetWeeklyReservations(start_date);
+  const { data } = useGetWeeklyReservations(start_date_param);
   const { data: room_data } = useGetRooms();
 
   const createTableCallback = useCallback(() => {
@@ -63,12 +58,10 @@ export const AdminPanel = () => {
             navigate({
               to: "/home/admin-this-is-a-secret",
               search: {
-                start_date: convertFromDate(
-                  new Date(
-                    start_date.getFullYear(),
-                    start_date.getMonth(),
-                    start_date.getDate() - 7
-                  )
+                start_date: new Date(
+                  start_date_param.getFullYear(),
+                  start_date_param.getMonth(),
+                  start_date_param.getDate() - 7
                 ),
               },
             })
@@ -97,12 +90,10 @@ export const AdminPanel = () => {
             navigate({
               to: "/home/admin-this-is-a-secret",
               search: {
-                start_date: convertFromDate(
-                  new Date(
-                    start_date.getFullYear(),
-                    start_date.getMonth(),
-                    start_date.getDate() + 7
-                  )
+                start_date: new Date(
+                  start_date_param.getFullYear(),
+                  start_date_param.getMonth(),
+                  start_date_param.getDate() + 7
                 ),
               },
             })

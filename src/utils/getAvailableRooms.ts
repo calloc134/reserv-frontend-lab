@@ -1,4 +1,4 @@
-import { slot } from "@/types/ReservationResponse";
+import { slot } from "@/types/dto/ReservationResponse";
 import { reservFetch } from "./reservFetch";
 import { convertFromDate } from "./convertFromDate";
 import { RoomResponse } from "@/types/RoomResponse";

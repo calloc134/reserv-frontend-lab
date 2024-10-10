@@ -1,7 +1,7 @@
 import {
   ReservationResponse,
   slotToNumber,
-} from "../types/ReservationResponse";
+} from "../types/dto/ReservationResponse";
 
 export const createTable = (data: {
   reservations: ReservationResponse[];

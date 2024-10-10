@@ -2,7 +2,7 @@ import { useAuth } from "@clerk/clerk-react";
 import { reservFetch } from "../utils/reservFetch";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { convertFromDate } from "../utils/convertFromDate";
-import { ReservationResponseTransformed } from "../types/ReservationResponseTransformed";
+import { ReservationResponseTransformed } from "../types/dto/ReservationResponseTransformed";
 import { convertToDate } from "../utils/convertToDate";
 
 // 内部的にtanstack queryを利用する
