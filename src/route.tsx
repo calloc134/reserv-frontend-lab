@@ -2,21 +2,17 @@ import {
   createRouter,
   createRoute,
   createRootRoute,
-  useNavigate,
   Outlet,
 } from "@tanstack/react-router";
-import { useAuth } from "@clerk/clerk-react";
-import { useEffect } from "react";
 import { LoginPage } from "./pages/LoginPage";
 import { WeeklyMyReservations } from "./pages/WeeklyMyReservations";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { HomeLayout } from "./components/HomeLayout";
-import { Suspense } from "react";
-import toast from "react-hot-toast";
 import { WeeklyReservations } from "./pages/WeeklyReservations";
 import { AdminPanel } from "./pages/AdminPanel";
 import { LoadingFallback } from "./components/LoadingFallback";
 import { validateDateString } from "./utils/validateDateString";
+import { AuthenticateLayoutPage } from "./pages/AuthenticateLayoutPage";
+import { NotFound } from "./components/NotFound";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -36,38 +32,17 @@ const index_route = createRoute({
 const not_found_route = createRoute({
   getParentRoute: () => rootRoute,
   path: "*",
-  component: () => (
-    <div className="flex h-screen justify-center items-center">
-      404 Not Found
-    </div>
-  ),
+  component: () => <NotFound />,
 });
 
 const home_route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/home",
-  component: () => {
-    const { isSignedIn, isLoaded } = useAuth();
-
-    const navigate = useNavigate();
-
-    // 認証の判定
-    useEffect(() => {
-      if (!isSignedIn && isLoaded) {
-        toast.error("ログインしてください");
-        // リダイレクト
-        navigate({
-          to: "/",
-        });
-      }
-    }, [isSignedIn, navigate]);
-
-    return (
-      <HomeLayout>
-        <Outlet />
-      </HomeLayout>
-    );
-  },
+  component: () => (
+    <AuthenticateLayoutPage>
+      <Outlet />
+    </AuthenticateLayoutPage>
+  ),
 });
 
 const reservations_route = createRoute({
