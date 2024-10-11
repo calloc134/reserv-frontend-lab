@@ -72,7 +72,6 @@ export const WeeklyReservations = () => {
             予約一覧(週)
           </div>
           <Link
-            // search={{ start_date: convertFromDate(start_date) }}
             search={{ start_date: start_date }}
             to="/home/my_reservations"
             className="p-2 rounded-lg border-2 border-black w-1/2 text-center bg-gray-200 hover:bg-gray-100 cursor-pointer"

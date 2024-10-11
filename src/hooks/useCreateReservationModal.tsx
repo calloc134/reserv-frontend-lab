@@ -12,17 +12,28 @@ import { Result, ok, err } from "neverthrow";
 import { getAvailableRooms } from "@/utils/getAvailableRooms";
 import { useAuth } from "@clerk/clerk-react";
 
+type handlers = {
+  onClickCancel: () => void;
+  onClickAccept: (room_uuid: string) => void;
+};
+
 export const useCreateReservationModal = () => {
   const [isOpened, setIsOpened] = useState(false);
   const [availableRooms, setAvailableRooms] = useState<RoomResponse[] | null>(
     null
   );
-  const [onClickCancel, setOnClickCancel] = useState<() => void>(
-    () => () => {}
-  );
-  const [onClickAccept, setOnClickAccept] = useState<
-    (room_uuid: string) => void
-  >(() => () => {});
+
+  // const [onClickCancel, setOnClickCancel] = useState<() => void>(
+  //   () => () => {}
+  // );
+  // const [onClickAccept, setOnClickAccept] = useState<
+  //   (room_uuid: string) => void
+  // >(() => () => {});
+
+  const [handlers, setHandlers] = useState<handlers>({
+    onClickCancel: () => {},
+    onClickAccept: () => {},
+  });
 
   const { getToken } = useAuth();
 
@@ -36,24 +47,22 @@ export const useCreateReservationModal = () => {
     );
     return new Promise<Result<string, undefined>>((resolve) => {
       setAvailableRooms(availableRooms);
-      setOnClickCancel(() => {
-        return () => {
+      setHandlers({
+        onClickCancel: () => {
           console.log("cancel");
           setIsOpened(false);
           setAvailableRooms(null);
           resolve(err(undefined));
-        };
-      });
-      setOnClickAccept(() => {
-        return (room_uuid: string) => {
+        },
+        onClickAccept: (room_uuid: string) => {
           console.log("accept");
           setIsOpened(false);
           setAvailableRooms(null);
           resolve(ok(room_uuid));
-        };
+        },
       });
     });
   };
 
-  return { openAlert, isOpened, availableRooms, onClickCancel, onClickAccept };
+  return { openAlert, isOpened, availableRooms, ...handlers };
 };
