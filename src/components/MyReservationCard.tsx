@@ -48,24 +48,29 @@ export const MyReservationCard = ({
                       {reservation_slot_index + 1}限:{" "}
                     </span>
                     {reservation_slot.map((reservation, reservation_index) => {
+                      const deletable =
+                        reservation.user?.user_id === my_user_id &&
+                        reservation.date.getTime() - new Date().getTime() >
+                          1000 * 60 * 60 * 24 * 3;
                       return (
                         <div
                           key={reservation_index}
                           className={
                             "text-gray-800 gap-2 flex items-center rounded-lg p-2 border-2 border-gray-300 " +
-                            (reservation.user?.user_id === my_user_id
+                            (deletable
                               ? " cursor-pointer hover:bg-red-100"
                               : "")
                           }
                           onClick={async () => {
-                            if (reservation.user?.user_id === my_user_id) {
-                              await onClickReservationArg({
-                                rord_uuid: reservation.rord_uuid,
-                                date: table_data.date,
-                                slot_number: reservation_slot_index + 1,
-                                room_name: reservation.room.name,
-                              });
+                            if (!deletable) {
+                              return;
                             }
+                            await onClickReservationArg({
+                              rord_uuid: reservation.rord_uuid,
+                              date: table_data.date,
+                              slot_number: reservation_slot_index + 1,
+                              room_name: reservation.room.name,
+                            });
                           }}
                         >
                           <span className="font-medium">

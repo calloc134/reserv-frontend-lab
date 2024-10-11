@@ -36,11 +36,20 @@ export const ReservationCard = ({
       <div>
         {table_data.reservation_slots.map(
           (reservation_slot, reservation_slot_index) => {
+            // 過去と当日は予約できない
+            const creatable =
+              table_data.date.getTime() - new Date().getTime() > 0;
             return (
               <div
                 key={reservation_slot_index}
-                className="py-2 border-b last:border-none cursor-pointer hover:bg-gray-100 rounded-md"
+                className={
+                  "py-2 border-b last:border-none rounded-md" +
+                  (creatable ? " cursor-pointer hover:bg-gray-100 " : "")
+                }
                 onClick={async () => {
+                  if (!creatable) {
+                    return;
+                  }
                   await onClickReservationSlot({
                     date: table_data.date,
                     slot_number: reservation_slot_index + 1,
