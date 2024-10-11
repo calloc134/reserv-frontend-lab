@@ -1,8 +1,8 @@
 import { useSearch } from "@tanstack/react-router";
 import { useNavigate } from "@tanstack/react-router";
-import { convertFromDate } from "@/utils/convertFromDate";
-import { useCreateDisabled } from "@/hooks/useCreateDisabled";
-import { useGetWeeklyReservations } from "@/hooks/useGetWeeklyReservations";
+import { convertFromDate } from "@/utils/convert/convertFromDate";
+import { useCreateDisabled } from "@/hooks/react-query/useCreateDisabled";
+import { useGetWeeklyReservations } from "@/hooks/react-query/useGetWeeklyReservations";
 import { createTable } from "@/utils/createTable";
 import { useAuth } from "@clerk/clerk-react";
 import { useState, useCallback, useMemo } from "react";
@@ -15,7 +15,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useGetRooms } from "@/hooks/useGetRooms";
+import { useGetRooms } from "@/hooks/react-query/useGetRooms";
 import { numberToSlot, slot } from "@/types/dto/ReservationResponse";
 import toast from "react-hot-toast";
 
@@ -129,7 +129,7 @@ export const AdminPanel = () => {
                   {["日", "月", "火", "水", "木", "金", "土"][x.date.getDay()]})
                 </div>
                 <div>
-                  {x.reservations.map((y, i) => {
+                  {x.reservation_slots.map((y, i) => {
                     return (
                       <div
                         key={i}

@@ -1,8 +1,8 @@
 import { useState, useMemo, useCallback } from "react";
-import { useGetWeeklyMyReservations } from "../hooks/useGetWeeklyMyReservations";
+import { useGetWeeklyMyReservations } from "../hooks/react-query/useGetWeeklyMyReservations";
 import { createTable } from "../utils/createTable";
 import { useAuth } from "@clerk/clerk-react";
-import { useDeleteReservation } from "../hooks/useDeleteReservation";
+import { useDeleteReservation } from "../hooks/react-query/useDeleteReservation";
 import toast from "react-hot-toast";
 import {
   AlertDialog,
@@ -163,7 +163,7 @@ export const WeeklyMyReservations = () => {
                   {["日", "月", "火", "水", "木", "金", "土"][x.date.getDay()]})
                 </div>
                 <div>
-                  {x.reservations.map((y, i) => {
+                  {x.reservation_slots.map((y, i) => {
                     return (
                       <div key={i} className="py-2 border-b last:border-none">
                         {y.length > 0 ? (

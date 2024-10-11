@@ -1,9 +1,9 @@
 import { useAuth } from "@clerk/clerk-react";
-import { reservFetch } from "../utils/reservFetch";
+import { reservFetch } from "../../utils/fetch/reservFetch";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { convertFromDate } from "../utils/convertFromDate";
-import { ReservationResponseTransformed } from "../types/dto/ReservationResponseTransformed";
-import { convertToDate } from "../utils/convertToDate";
+import { convertFromDate } from "../../utils/convert/convertFromDate";
+import { ReservationResponseTransformed } from "../../types/dto/ReservationResponseTransformed";
+import { convertToDate } from "../../utils/convert/convertToDate";
 
 // 内部的にtanstack queryを利用する
 export const useGetWeeklyReservations = (start_date: Date) => {

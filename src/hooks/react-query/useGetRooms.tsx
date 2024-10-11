@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/clerk-react";
-import { reservFetch } from "@/utils/reservFetch";
+import { reservFetch } from "@/utils/fetch/reservFetch";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { RoomResponse } from "@/types/dto/RoomResponse";
 
