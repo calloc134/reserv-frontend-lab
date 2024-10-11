@@ -1,12 +1,12 @@
 import { useAuth } from "@clerk/clerk-react";
-import { reservFetch } from "../utils/reservFetch";
+import { reservFetch } from "../../utils/fetch/reservFetch";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { convertFromDate } from "../utils/convertFromDate";
-import { ReservationResponseTransformed } from "../types/ReservationResponseTransformed";
-import { convertToDate } from "../utils/convertToDate";
+import { convertFromDate } from "../../utils/convert/convertFromDate";
+import { ReservationResponseTransformed } from "../../types/dto/ReservationResponseTransformed";
+import { convertToDate } from "../../utils/convert/convertToDate";
 
 // 内部的にtanstack queryを利用する
-export const useGetWeeklyMyReservations = (start_date: Date) => {
+export const useGetWeeklyReservations = (start_date: Date) => {
   const { getToken } = useAuth();
 
   // 呼び出しの形式はYYYY-MM-DD
@@ -20,16 +20,10 @@ export const useGetWeeklyMyReservations = (start_date: Date) => {
   const raw_end_date = convertFromDate(end_date);
 
   const { data, error, isLoading } = useSuspenseQuery({
-    queryKey: [
-      "reservations",
-      "weekly",
-      "my-reservations",
-      raw_start_date,
-      raw_end_date,
-    ],
+    queryKey: ["reservations", "weekly", raw_start_date, raw_end_date],
     queryFn: async () => {
       const query_result = (await reservFetch(
-        `/reservations/start_date/${raw_start_date}/end_date/${raw_end_date}/my-reservations/`,
+        `/reservations/start_date/${raw_start_date}/end_date/${raw_end_date}/`,
         {
           headers: {
             Authorization: `Bearer ${await getToken()}`,

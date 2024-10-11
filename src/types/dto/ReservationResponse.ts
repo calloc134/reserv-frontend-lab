@@ -1,3 +1,5 @@
+import { Result, ok, err } from "neverthrow";
+
 export type ReservationResponse = {
   rord_uuid: string;
   user: {
@@ -28,15 +30,17 @@ export const slotToNumber = (slot: slot): number => {
   }
 };
 
-export const numberToSlot = (num: number): slot | undefined => {
+export const numberToSlot = (num: number): Result<slot, Error> => {
   switch (num) {
     case 1:
-      return "first";
+      return ok("first");
     case 2:
-      return "second";
+      return ok("second");
     case 3:
-      return "third";
+      return ok("third");
     case 4:
-      return "fourth";
+      return ok("fourth");
   }
+
+  return err(new Error("Invalid number"));
 };

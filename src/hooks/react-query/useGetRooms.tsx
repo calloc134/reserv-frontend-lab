@@ -1,7 +1,7 @@
 import { useAuth } from "@clerk/clerk-react";
-import { reservFetch } from "@/utils/reservFetch";
+import { reservFetch } from "@/utils/fetch/reservFetch";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { RoomResponse } from "@/types/RoomResponse";
+import { RoomResponse } from "@/types/dto/RoomResponse";
 
 // 内部的にtanstack queryを利用する
 export const useGetRooms = () => {
