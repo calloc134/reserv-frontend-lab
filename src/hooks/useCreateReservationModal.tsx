@@ -9,7 +9,7 @@ import { Slot } from "@/types/dto/ReservationResponse";
 import { RoomResponse } from "@/types/dto/RoomResponse";
 import { useState } from "react";
 import { Result, ok, err } from "neverthrow";
-import { getAvailableRooms } from "@/utils/getAvailableRooms";
+import { getAvailableRooms } from "@/utils/fetch/getAvailableRooms";
 import { useAuth } from "@clerk/clerk-react";
 
 type handlers = {
