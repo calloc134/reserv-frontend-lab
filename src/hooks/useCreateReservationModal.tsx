@@ -5,7 +5,7 @@
 // 戻り値: 承諾したかキャンセルしたか
 // 承諾したなら、どの部屋を選択したか
 
-import { slot } from "@/types/dto/ReservationResponse";
+import { Slot } from "@/types/dto/ReservationResponse";
 import { RoomResponse } from "@/types/dto/RoomResponse";
 import { useState } from "react";
 import { Result, ok, err } from "neverthrow";
@@ -30,7 +30,7 @@ export const useCreateReservationModal = () => {
 
   const { getToken } = useAuth();
 
-  const openModal = async ({ date, slot }: { date: Date; slot: slot }) => {
+  const openModal = async ({ date, slot }: { date: Date; slot: Slot }) => {
     setIsOpened(true);
     const token = await getToken();
     const availableRooms: RoomResponse[] = await getAvailableRooms(

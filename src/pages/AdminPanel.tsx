@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { createTables } from "../utils/createTables";
 import { useAuth } from "@clerk/clerk-react";
 import { useGetWeeklyReservations } from "../hooks/react-query/useGetWeeklyReservations";
-import { slot } from "@/types/dto/ReservationResponse";
+import { Slot } from "@/types/dto/ReservationResponse";
 import toast from "react-hot-toast";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useCreateReservationModal } from "@/hooks/useCreateReservationModal";
@@ -39,16 +39,11 @@ export const AdminPanel = () => {
     return createTableCallback(data);
   }, [data, createTableCallback]);
 
-  const {
-    isOpened,
-    openModal,
-    onClickCancel,
-    onClickAccept,
-    availableRooms,
-  } = useCreateReservationModal();
+  const { isOpened, openModal, onClickCancel, onClickAccept, availableRooms } =
+    useCreateReservationModal();
 
   const onClickReservationSlot = useCallback(
-    async (date: Date, slot: slot) => {
+    async (date: Date, slot: Slot) => {
       const alert_result = await openModal({ date, slot });
       if (alert_result.isErr()) {
         return;

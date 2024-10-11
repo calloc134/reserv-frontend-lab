@@ -1,4 +1,5 @@
 import { Result, ok, err } from "neverthrow";
+import { type LengthOfUnion } from "@/utils/lengthOfUnion";
 
 export type ReservationResponse = {
   rord_uuid: string;
@@ -10,14 +11,18 @@ export type ReservationResponse = {
     room_id: string;
     name: string;
   };
-  slot: slot;
+  slot: Slot;
   date: Date;
 };
 
-export type slot = "first" | "second" | "third" | "fourth";
+export type Slot = "first" | "second" | "third" | "fourth";
+
+type SlotLength = LengthOfUnion<Slot>;
+
+export const slot_length: SlotLength = 4;
 
 // numberに対応させる
-export const slotToNumber = (slot: slot): number => {
+export const slotToNumber = (slot: Slot): number => {
   switch (slot) {
     case "first":
       return 1;
@@ -30,7 +35,7 @@ export const slotToNumber = (slot: slot): number => {
   }
 };
 
-export const numberToSlot = (num: number): Result<slot, Error> => {
+export const numberToSlot = (num: number): Result<Slot, Error> => {
   switch (num) {
     case 1:
       return ok("first");

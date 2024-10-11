@@ -1,5 +1,6 @@
 import {
   ReservationResponse,
+  slot_length,
   slotToNumber,
 } from "../types/dto/ReservationResponse";
 
@@ -32,7 +33,8 @@ export const createTables = (data: {
     date.setDate(data.start_date.getDate() + i);
     table.push({
       date: date,
-      reservation_slots: [[], [], [], []],
+      // unionのキーの数だけ配列を作成
+      reservation_slots: Array.from({ length: slot_length }, () => []),
     });
   }
 

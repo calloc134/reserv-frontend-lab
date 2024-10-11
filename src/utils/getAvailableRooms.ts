@@ -1,11 +1,11 @@
-import { slot } from "@/types/dto/ReservationResponse";
+import { Slot } from "@/types/dto/ReservationResponse";
 import { reservFetch } from "./fetch/reservFetch";
 import { convertFromDate } from "./convert/convertFromDate";
 import { RoomResponse } from "@/types/dto/RoomResponse";
 
 export const getAvailableRooms = async (
   date: Date,
-  slot: slot,
+  slot: Slot,
   token: string | null
 ) => {
   const raw_date = convertFromDate(date);

@@ -1,4 +1,4 @@
-import { numberToSlot, slot } from "@/types/dto/ReservationResponse";
+import { numberToSlot, Slot } from "@/types/dto/ReservationResponse";
 import { Table } from "@/utils/createTables";
 import { useCallback } from "react";
 
@@ -10,7 +10,7 @@ export const ReservationCard = ({
 }: {
   key: string;
   table_data: Table;
-  onClickReservationSlotArg: (date: Date, slot: slot) => Promise<void>;
+  onClickReservationSlotArg: (date: Date, slot: Slot) => Promise<void>;
   my_user_id?: string;
 }) => {
   const onClickReservationSlot = useCallback(
