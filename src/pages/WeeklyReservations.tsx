@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { createTable } from "../utils/createTable";
+import { createTables } from "../utils/createTables";
 import { useAuth } from "@clerk/clerk-react";
 import { useGetWeeklyReservations } from "../hooks/react-query/useGetWeeklyReservations";
 import { slot } from "@/types/dto/ReservationResponse";
@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { CreateReservationModal } from "@/components/CreateReservationModal";
 import { useCreateReservationModal } from "@/hooks/useCreateReservationModal";
-import { Card } from "@/components/Card";
+import { ReservationCard } from "@/components/ReservationCard";
 import { DatePaginator } from "@/components/DatePaginator";
 
 export const WeeklyReservations = () => {
@@ -27,22 +27,27 @@ export const WeeklyReservations = () => {
   // 予約がある場合は、その予約を表示する
 
   const createTableCallback = useCallback(
-    (data: Parameters<typeof createTable>[0]) => {
-      return createTable(data);
+    (data: Parameters<typeof createTables>[0]) => {
+      return createTables(data);
     },
     []
   );
-  const table_data = useMemo(() => {
+  const tables_data = useMemo(() => {
     if (!data) {
       return [];
     }
     return createTableCallback(data);
   }, [data, createTableCallback]);
 
-  const { isOpened, openAlert, onClickCancel, onClickAccept, availableRooms } =
-    useCreateReservationModal();
+  const {
+    isOpened,
+    openModal: openAlert,
+    onClickCancel,
+    onClickAccept,
+    availableRooms,
+  } = useCreateReservationModal();
 
-  const onClickBlank = useCallback(
+  const onClickReservationSlot = useCallback(
     async (date: Date, slot: slot) => {
       const alert_result = await openAlert({ date, slot });
       if (alert_result.isErr()) {
@@ -56,9 +61,8 @@ export const WeeklyReservations = () => {
           room_uuid,
         });
         toast.success("予約が完了しました");
-      } catch (e) {
-        console.error(e);
-        toast.error(`${e}`);
+      } catch (error) {
+        toast.error(`予約に失敗しました。\n${(error as Error).message}`);
       }
     },
     [mutateAsync, openAlert]
@@ -111,12 +115,12 @@ export const WeeklyReservations = () => {
       </div>
       <div className="flex justify-center">
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-10 gap-4 w-full justify-center">
-          {table_data.map((x) => (
-            <Card
-              key={x.date.toString()}
-              table_data={x}
+          {tables_data.map((table_data) => (
+            <ReservationCard
+              key={table_data.date.toString()}
+              table_data={table_data}
               my_user_id={userId ? userId : undefined}
-              onClickBlank={onClickBlank}
+              onClickReservationSlotArg={onClickReservationSlot}
             />
           ))}
         </div>

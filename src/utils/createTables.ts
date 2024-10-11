@@ -9,9 +9,7 @@ export type Table = {
   reservation_slots: Array<ReservationResponse[]>;
 };
 
-
-
-export const createTable = (data: {
+export const createTables = (data: {
   reservations: ReservationResponse[];
   start_date: Date;
   end_date: Date;

@@ -1,29 +1,26 @@
-import { numberToSlot, slot } from "@/types/dto/ReservationResponse";
-import { Table } from "@/utils/createTable";
-import { useCallback } from "react";
+import { Table } from "@/utils/createTables";
 
-export const Card = ({
+export const MyReservationCard = ({
   key,
   table_data,
-  onClickBlank,
+  onClickReservationArg,
   my_user_id,
 }: {
   key: string;
   table_data: Table;
-  onClickBlank: (date: Date, slot: slot) => Promise<void>;
+  onClickReservationArg: ({
+    rord_uuid,
+    date,
+    slot_number,
+    room_name,
+  }: {
+    rord_uuid: string;
+    date: Date;
+    slot_number: number;
+    room_name: string;
+  }) => void;
   my_user_id?: string;
 }) => {
-  const onClickReservationSlot = useCallback(
-    async ({ date, slot_number }: { date: Date; slot_number: number }) => {
-      const number_to_slot_result = numberToSlot(slot_number);
-      if (number_to_slot_result.isErr()) {
-        throw new Error("Invalid number");
-      }
-      await onClickBlank(date, number_to_slot_result.value);
-    },
-    [onClickBlank]
-  );
-
   return (
     <div
       key={key}
@@ -39,13 +36,7 @@ export const Card = ({
             return (
               <div
                 key={reservation_slot_index}
-                className="py-2 border-b last:border-none cursor-pointer hover:bg-gray-100 rounded-md"
-                onClick={async () => {
-                  await onClickReservationSlot({
-                    date: table_data.date,
-                    slot_number: reservation_slot_index + 1,
-                  });
-                }}
+                className="py-2 border-b last:border-none"
               >
                 {reservation_slot.length === 0 ? (
                   <div className="text-gray-500">
@@ -56,11 +47,26 @@ export const Card = ({
                     <span className="text-gray-600">
                       {reservation_slot_index + 1}限:{" "}
                     </span>
-                    {reservation_slot.map((reservation) => {
+                    {reservation_slot.map((reservation, reservation_index) => {
                       return (
                         <div
-                          key={reservation.rord_uuid}
-                          className="text-gray-800 gap-2 flex items-center rounded-lg p-2 border-2 border-gray-300"
+                          key={reservation_index}
+                          className={
+                            "text-gray-800 gap-2 flex items-center rounded-lg p-2 border-2 border-gray-300 " +
+                            (reservation.user?.user_id === my_user_id
+                              ? " cursor-pointer hover:bg-red-100"
+                              : "")
+                          }
+                          onClick={async () => {
+                            if (reservation.user?.user_id === my_user_id) {
+                              await onClickReservationArg({
+                                rord_uuid: reservation.rord_uuid,
+                                date: table_data.date,
+                                slot_number: reservation_slot_index + 1,
+                                room_name: reservation.room.name,
+                              });
+                            }
+                          }}
                         >
                           <span className="font-medium">
                             {reservation.room.name}:

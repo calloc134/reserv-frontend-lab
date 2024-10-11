@@ -1,7 +1,7 @@
 // 予約作成アラート用のカスタムフック
 // 引数なし
 // 戻り値:  アラートを開くためのPromise
-// 引数: アラートに表示する内容(利用可能な部屋リスト、日付、時限)
+// 引数: アラートに表示する内容(日付、時限)
 // 戻り値: 承諾したかキャンセルしたか
 // 承諾したなら、どの部屋を選択したか
 
@@ -23,13 +23,6 @@ export const useCreateReservationModal = () => {
     null
   );
 
-  // const [onClickCancel, setOnClickCancel] = useState<() => void>(
-  //   () => () => {}
-  // );
-  // const [onClickAccept, setOnClickAccept] = useState<
-  //   (room_uuid: string) => void
-  // >(() => () => {});
-
   const [handlers, setHandlers] = useState<handlers>({
     onClickCancel: () => {},
     onClickAccept: () => {},
@@ -37,7 +30,7 @@ export const useCreateReservationModal = () => {
 
   const { getToken } = useAuth();
 
-  const openAlert = async ({ date, slot }: { date: Date; slot: slot }) => {
+  const openModal = async ({ date, slot }: { date: Date; slot: slot }) => {
     setIsOpened(true);
     const token = await getToken();
     const availableRooms: RoomResponse[] = await getAvailableRooms(
@@ -64,5 +57,5 @@ export const useCreateReservationModal = () => {
     });
   };
 
-  return { openAlert, isOpened, availableRooms, ...handlers };
+  return { openModal, isOpened, availableRooms, ...handlers };
 };

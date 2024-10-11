@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { convertFromDate } from "@/utils/convert/convertFromDate";
 import { useCreateDisabled } from "@/hooks/react-query/useCreateDisabled";
 import { useGetWeeklyReservations } from "@/hooks/react-query/useGetWeeklyReservations";
-import { createTable } from "@/utils/createTable";
+import { createTables } from "@/utils/createTables";
 import { useAuth } from "@clerk/clerk-react";
 import { useState, useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,7 @@ export const AdminPanel = () => {
   const { data: room_data } = useGetRooms();
 
   const createTableCallback = useCallback(() => {
-    return createTable(data);
+    return createTables(data);
   }, [data]);
 
   const table_data = useMemo(createTableCallback, [createTableCallback]);
