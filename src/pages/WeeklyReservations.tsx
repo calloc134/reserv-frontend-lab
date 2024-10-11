@@ -39,17 +39,12 @@ export const WeeklyReservations = () => {
     return createTableCallback(data);
   }, [data, createTableCallback]);
 
-  const {
-    isOpened,
-    openModal: openAlert,
-    onClickCancel,
-    onClickAccept,
-    availableRooms,
-  } = useCreateReservationModal();
+  const { isOpened, openModal, onClickCancel, onClickAccept, availableRooms } =
+    useCreateReservationModal();
 
   const onClickReservationSlot = useCallback(
     async (date: Date, slot: slot) => {
-      const alert_result = await openAlert({ date, slot });
+      const alert_result = await openModal({ date, slot });
       if (alert_result.isErr()) {
         return;
       }
@@ -65,7 +60,7 @@ export const WeeklyReservations = () => {
         toast.error(`予約に失敗しました。\n${(error as Error).message}`);
       }
     },
-    [mutateAsync, openAlert]
+    [mutateAsync, openModal]
   );
 
   return (

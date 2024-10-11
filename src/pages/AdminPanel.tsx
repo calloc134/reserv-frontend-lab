@@ -41,7 +41,7 @@ export const AdminPanel = () => {
 
   const {
     isOpened,
-    openModal: openAlert,
+    openModal,
     onClickCancel,
     onClickAccept,
     availableRooms,
@@ -49,7 +49,7 @@ export const AdminPanel = () => {
 
   const onClickReservationSlot = useCallback(
     async (date: Date, slot: slot) => {
-      const alert_result = await openAlert({ date, slot });
+      const alert_result = await openModal({ date, slot });
       if (alert_result.isErr()) {
         return;
       }
@@ -67,7 +67,7 @@ export const AdminPanel = () => {
         );
       }
     },
-    [mutateAsync, openAlert]
+    [mutateAsync, openModal]
   );
 
   return (
