@@ -1,3 +1,4 @@
+import { convertFromDate } from "@/utils/convert/convertFromDate";
 import { reservFetch } from "@/utils/fetch/reservFetch";
 import { useAuth } from "@clerk/clerk-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -10,9 +11,11 @@ export const usePostDisabled = () => {
   return useMutation({
     mutationFn: async (data: {
       room_uuid: string;
-      date: string;
+      date: Date;
       slot: string;
     }) => {
+      const raw_date = convertFromDate(data.date);
+
       const result = (await reservFetch(`/rooms/to-disable/`, {
         method: "POST",
         headers: {
@@ -21,7 +24,7 @@ export const usePostDisabled = () => {
         },
         body: JSON.stringify({
           room_uuid: data.room_uuid,
-          date: data.date,
+          date: raw_date,
           slot: data.slot,
         }),
       })) as { status: number; data: { message: string } };
