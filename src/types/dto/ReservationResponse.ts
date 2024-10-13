@@ -15,11 +15,11 @@ export type ReservationResponse = {
   date: Date;
 };
 
-export type Slot = "first" | "second" | "third" | "fourth";
+export type Slot = "first" | "second" | "third" | "fourth" | "fifth";
 
 type SlotLength = LengthOfUnion<Slot>;
 
-export const slot_length: SlotLength = 4;
+export const slot_length: SlotLength = 5 as const;
 
 // numberに対応させる
 export const slotToNumber = (slot: Slot): number => {
@@ -32,6 +32,8 @@ export const slotToNumber = (slot: Slot): number => {
       return 3;
     case "fourth":
       return 4;
+    case "fifth":
+      return 5;
   }
 };
 
@@ -45,6 +47,8 @@ export const numberToSlot = (num: number): Result<Slot, Error> => {
       return ok("third");
     case 4:
       return ok("fourth");
+    case 5:
+      return ok("fifth");
   }
 
   return err(new Error("Invalid number"));
