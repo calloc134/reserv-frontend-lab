@@ -21,6 +21,7 @@ export const MyReservationCard = ({
   }) => void;
   my_user_id?: string;
 }) => {
+  const now_date = new Date();
   return (
     <div
       key={key}
@@ -48,10 +49,10 @@ export const MyReservationCard = ({
                       {reservation_slot_index + 1}限:{" "}
                     </span>
                     {reservation_slot.map((reservation, reservation_index) => {
+                      // 過去の予約は削除できない
                       const deletable =
                         reservation.user?.user_id === my_user_id &&
-                        reservation.date.getTime() - new Date().getTime() >
-                          1000 * 60 * 60 * 24 * 3;
+                        reservation.date.getTime() - now_date.getTime() > 0;
                       return (
                         <div
                           key={reservation_index}
