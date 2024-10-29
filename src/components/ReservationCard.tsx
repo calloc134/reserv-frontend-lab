@@ -24,6 +24,8 @@ export const ReservationCard = ({
     [onClickReservationSlotArg]
   );
 
+  const now_date = new Date();
+
   return (
     <div
       key={key}
@@ -36,9 +38,9 @@ export const ReservationCard = ({
       <div>
         {table_data.reservation_slots.map(
           (reservation_slot, reservation_slot_index) => {
-            // 過去と当日は予約できない
+            // 過去は予約できない
             const creatable =
-              table_data.date.getTime() - new Date().getTime() > 0;
+              table_data.date.getTime() - now_date.getTime() > 0;
             return (
               <div
                 key={reservation_slot_index}
