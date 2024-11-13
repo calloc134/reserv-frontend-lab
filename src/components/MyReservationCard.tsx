@@ -52,7 +52,8 @@ export const MyReservationCard = ({
                       // 過去の予約は削除できない
                       const deletable =
                         reservation.user?.user_id === my_user_id &&
-                        reservation.date.getTime() - now_date.getTime() > 0;
+                        // reservation.date.getTime() - now_date.getTime() > 0;
+                        true;
                       return (
                         <div
                           key={reservation_index}

@@ -40,7 +40,8 @@ export const ReservationCard = ({
           (reservation_slot, reservation_slot_index) => {
             // 過去は予約できない
             const creatable =
-              table_data.date.getTime() - now_date.getTime() > 0;
+              // table_data.date.getTime() - now_date.getTime() > 0;
+              true;
             return (
               <div
                 key={reservation_slot_index}
