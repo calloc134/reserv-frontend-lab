@@ -14,8 +14,9 @@ export function validateDateString(search: Record<string, unknown>) {
   if (typeof search.start_date === "string") {
     const date_result = convertStringToDate(search.start_date);
     if (date_result.isOk()) {
+      const monday = getMondayOfThisWeek(date_result.value);
       return {
-        start_date: date_result.value,
+        start_date: monday,
       };
     }
   }
