@@ -24,7 +24,7 @@ export const ReservationCard = ({
     [onClickReservationSlotArg]
   );
 
-  const now_date = new Date();
+  // const now_date = new Date();
 
   return (
     <div

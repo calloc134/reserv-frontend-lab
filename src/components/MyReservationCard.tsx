@@ -21,7 +21,7 @@ export const MyReservationCard = ({
   }) => void;
   my_user_id?: string;
 }) => {
-  const now_date = new Date();
+  // const now_date = new Date();
   return (
     <div
       key={key}
