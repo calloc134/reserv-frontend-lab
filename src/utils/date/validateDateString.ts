@@ -1,5 +1,5 @@
 import { Result, ok, err } from "neverthrow";
-import { getMondayOfThisWeek } from "./getMondayOfThisWeek";
+import { getMondayOfThisWeek } from "../getMondayOfThisWeek";
 
 function convertStringToDate(dateString: string): Result<Date, string> {
   try {
