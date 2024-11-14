@@ -1,6 +1,6 @@
 import { Slot } from "@/types/dto/ReservationResponse";
 import { reservFetch } from "./reservFetch";
-import { convertFromDate } from "../convert/convertFromDate";
+import { convertFromDate } from "../date/convertFromDate";
 import { RoomResponse } from "@/types/dto/RoomResponse";
 
 export const getAvailableRooms = async (
