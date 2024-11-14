@@ -1,9 +1,10 @@
 import { Result, ok, err } from "neverthrow";
 import { fromZonedTime } from "date-fns-tz";
+const date_regex = /^\d{4}-\d{1,2}-\d{1,2}$/;
 
 export function convertToDate(date_string: string): Result<Date, Error> {
-  // 正規表現を用いてYYYY-MM-DD形式の文字列かどうかを判定する
-  const date_regex = /^\d{4}-\d{2}-\d{2}$/;
+  // 正規表現を用いてyyyy-MM-dd形式の文字列かどうかを判定する(MMとddは1 or 2桁)
+  // TODO: バックエンドを2桁で返すように変更する
   if (!date_regex.test(date_string)) {
     return err(new Error("Invalid date string"));
   }
@@ -19,7 +20,6 @@ export function convertToDateInBrasil(
   date_string: string
 ): Result<Date, Error> {
   // 正規表現を用いてYYYY-MM-DD形式の文字列かどうかを判定する
-  const date_regex = /^\d{4}-\d{2}-\d{2}$/;
   if (!date_regex.test(date_string)) {
     return err(new Error("Invalid date string"));
   }
