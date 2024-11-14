@@ -1,6 +1,6 @@
 import { numberToSlot, Slot } from "@/types/dto/ReservationResponse";
 import { Table } from "@/utils/createTables";
-import { getWeekdayString } from "@/utils/date/getWeekdayString";
+import { getFormatDateString } from "@/utils/date/getFormatDateString";
 import { useCallback } from "react";
 
 export const ReservationCard = ({
@@ -33,8 +33,7 @@ export const ReservationCard = ({
       className="p-4 bg-white rounded-lg col-span-1 sm:col-span-2 md:col-span-2 border-2 border-black"
     >
       <div className="text-center text-lg font-semibold text-gray-700 mb-4">
-        {table_data.date.getMonth() + 1}月{table_data.date.getDate()}日 (
-        {getWeekdayString(table_data.date)})
+        {getFormatDateString(table_data.date)}
       </div>
       <div>
         {table_data.reservation_slots.map(
