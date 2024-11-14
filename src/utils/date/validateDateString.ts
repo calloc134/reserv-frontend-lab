@@ -3,6 +3,7 @@ import { getMondayOfThisWeek } from "./getMondayOfThisWeek";
 
 function convertStringToDate(dateString: string): Result<Date, string> {
   try {
+    // これはDate型の内容がそのまま保存されていると考えられるので、タイムゾーンを考慮しない
     const date = new Date(dateString);
     return ok(date);
   } catch (e) {
