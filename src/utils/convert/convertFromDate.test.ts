@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
+  convertFromDate,
   convertFromDateInBrasil,
   convertFromDateInTokyo,
   convertFromDateInUTC,
@@ -7,6 +8,15 @@ import {
 
 describe("convertToDate", () => {
   it("有効なDateオブジェクトの場合はyyyy-MM-dd形式の文字列を返す", () => {
+    // 東京において2024年10月1日のDateオブジェクトを生成
+    // この場合、epoch時間は1727708400000となる
+    const date = new Date(1727708400000);
+
+    const tokyo_result = convertFromDate(date);
+    expect(tokyo_result).toBe("2024-10-01");
+  });
+
+  it("有効なDateオブジェクトの場合はyyyy-MM-dd HH:mm:ss形式の文字列を返す", () => {
     // 東京において2024年10月1日のDateオブジェクトを生成
     // この場合、epoch時間は1727708400000となる
     const date = new Date(1727708400000);
