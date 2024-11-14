@@ -1,4 +1,5 @@
 import { Table } from "@/utils/createTables";
+import { getWeekdayString } from "@/utils/date/getWeekdayString";
 
 export const MyReservationCard = ({
   key,
@@ -29,7 +30,7 @@ export const MyReservationCard = ({
     >
       <div className="text-center text-lg font-semibold text-gray-700 mb-4">
         {table_data.date.getMonth() + 1}月{table_data.date.getDate()}日 (
-        {["日", "月", "火", "水", "木", "金", "土"][table_data.date.getDay()]})
+        {getWeekdayString(table_data.date)})
       </div>
       <div>
         {table_data.reservation_slots.map(

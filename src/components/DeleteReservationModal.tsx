@@ -9,6 +9,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
+import { getWeekdayString } from "@/utils/date/getWeekdayString";
 
 export const DeleteReservationModal = ({
   isOpened,
@@ -36,12 +37,7 @@ export const DeleteReservationModal = ({
                       <td className="border px-4 py-2">
                         {modalState.date.getMonth() + 1}月
                         {modalState.date.getDate()}日 (
-                        {
-                          ["日", "月", "火", "水", "木", "金", "土"][
-                            modalState.date.getDay()
-                          ]
-                        }
-                        )
+                        {getWeekdayString(modalState.date)})
                       </td>
                     </tr>
                     <tr>
