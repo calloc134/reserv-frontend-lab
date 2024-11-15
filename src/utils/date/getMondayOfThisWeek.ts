@@ -1,12 +1,15 @@
-import { previousMonday, nextMonday, isWeekend } from "date-fns";
-import { toZonedTime } from "date-fns-tz";
+import { previousMonday, nextMonday, isWeekend, isMonday } from "date-fns";
 
 export function getMondayOfThisWeek(date: Date): Date {
-  if (isWeekend(toZonedTime(date, "Asia/Tokyo"))) {
+  // ここの判定部分ってタイムゾーン意識できてなくない？
+  if (isWeekend(date)) {
     // 休日であるため、次の月曜日を取得
     return nextMonday(date);
+  } else if (isMonday(date)) {
+    // 月曜日であるため、そのまま返す
+    return date;
   } else {
-    // 平日であるため、直前の月曜日を取得
+    // それ以外の曜日であるため、前の月曜日を取得
     return previousMonday(date);
   }
 }
