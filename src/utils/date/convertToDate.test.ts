@@ -20,6 +20,11 @@ describe("convertToDate", () => {
     }
   });
 
+  it("無効な日付文字列の場合はエラーを返す フォーマットが違う", () => {
+    const result = convertToDate("2024-10-1");
+    expect(result.isOk()).toBe(false);
+  });
+
   it("無効な日付文字列の場合はエラーを返す 1", () => {
     const result = convertToDate("invalid-date-string");
     expect(result.isErr()).toBe(true);
