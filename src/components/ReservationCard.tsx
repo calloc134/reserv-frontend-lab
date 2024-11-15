@@ -1,6 +1,8 @@
 import { numberToSlot, Slot } from "@/types/dto/ReservationResponse";
 import { Table } from "@/utils/createTables";
 import { getFormatDateString } from "@/utils/date/getFormatDateString";
+import { getToday } from "@/utils/date/getToday";
+import { differenceInDays } from "date-fns";
 import { useCallback } from "react";
 
 export const ReservationCard = ({
@@ -25,7 +27,7 @@ export const ReservationCard = ({
     [onClickReservationSlotArg]
   );
 
-  // const now_date = new Date();
+  const now_date = getToday();
 
   return (
     <div
@@ -39,9 +41,8 @@ export const ReservationCard = ({
         {table_data.reservation_slots.map(
           (reservation_slot, reservation_slot_index) => {
             // 過去は予約できない
-            const creatable =
-              // table_data.date.getTime() - now_date.getTime() > 0;
-              true;
+            const creatable = differenceInDays(now_date, table_data.date) <= 0;
+            true;
             return (
               <div
                 key={reservation_slot_index}

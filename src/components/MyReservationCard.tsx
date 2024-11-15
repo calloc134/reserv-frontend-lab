@@ -1,5 +1,7 @@
 import { Table } from "@/utils/createTables";
 import { getFormatDateString } from "@/utils/date/getFormatDateString";
+import { getToday } from "@/utils/date/getToday";
+import { differenceInDays } from "date-fns";
 
 export const MyReservationCard = ({
   key,
@@ -22,7 +24,7 @@ export const MyReservationCard = ({
   }) => void;
   my_user_id?: string;
 }) => {
-  // const now_date = new Date();
+  const now_date = getToday();
   return (
     <div
       key={key}
@@ -52,8 +54,8 @@ export const MyReservationCard = ({
                       // 過去の予約は削除できない
                       const deletable =
                         reservation.user?.user_id === my_user_id &&
-                        // reservation.date.getTime() - now_date.getTime() > 0;
-                        true;
+                        differenceInDays(now_date, table_data.date) <= 0;
+                      true;
                       return (
                         <div
                           key={reservation_index}
