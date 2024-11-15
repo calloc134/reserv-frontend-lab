@@ -4,17 +4,14 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { convertFromDate } from "../../utils/date/convertFromDate";
 import { ReservationResponseTransformed } from "../../types/dto/ReservationResponseTransformed";
 import { convertToDate } from "../../utils/date/convertToDate";
+import { addDays } from "date-fns";
 
 // 内部的にtanstack queryを利用する
 export const useGetWeeklyReservations = (start_date: Date) => {
   const { getToken } = useAuth();
 
   // 呼び出しの形式はYYYY-MM-DD
-  const end_date = new Date(
-    start_date.getFullYear(),
-    start_date.getMonth(),
-    start_date.getDate() + 4
-  );
+  const end_date = addDays(start_date, 4);
 
   const raw_start_date = convertFromDate(start_date);
   const raw_end_date = convertFromDate(end_date);
