@@ -10,6 +10,7 @@ import { ReservationCard } from "@/components/ReservationCard";
 import { DatePaginator } from "@/components/DatePaginator";
 import { usePostDisabled } from "@/hooks/react-query/usePostDisabled";
 import { DisableReservationModal } from "@/components/DisableReservationModal";
+import { addWeeks } from "date-fns";
 
 export const AdminPanel = () => {
   const { start_date } = useSearch({ from: "/home/admin-this-is-a-secret" });
@@ -73,11 +74,7 @@ export const AdminPanel = () => {
             navigate({
               to: "/home/admin-this-is-a-secret",
               search: {
-                start_date: new Date(
-                  start_date.getFullYear(),
-                  start_date.getMonth(),
-                  start_date.getDate() - 7
-                ),
+                start_date: addWeeks(start_date, -1),
               },
             })
           }
@@ -85,11 +82,7 @@ export const AdminPanel = () => {
             navigate({
               to: "/home/admin-this-is-a-secret",
               search: {
-                start_date: new Date(
-                  start_date.getFullYear(),
-                  start_date.getMonth(),
-                  start_date.getDate() + 7
-                ),
+                start_date: addWeeks(start_date, 1),
               },
             })
           }

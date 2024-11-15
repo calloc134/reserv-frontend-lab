@@ -10,6 +10,7 @@ import { useDeleteReservationModal } from "@/hooks/useDeleteReservationModal";
 import toast from "react-hot-toast";
 import { MyReservationCard } from "@/components/MyReservationCard";
 import { DeleteReservationModal } from "@/components/DeleteReservationModal";
+import { addWeeks } from "date-fns";
 
 export const WeeklyMyReservations = () => {
   const { start_date } = useSearch({
@@ -96,11 +97,7 @@ export const WeeklyMyReservations = () => {
               navigate({
                 to: "/home/my_reservations",
                 search: {
-                  start_date: new Date(
-                    start_date.getFullYear(),
-                    start_date.getMonth(),
-                    start_date.getDate() - 7
-                  ),
+                  start_date: addWeeks(start_date, -1),
                 },
               })
             }
@@ -108,11 +105,7 @@ export const WeeklyMyReservations = () => {
               navigate({
                 to: "/home/my_reservations",
                 search: {
-                  start_date: new Date(
-                    start_date.getFullYear(),
-                    start_date.getMonth(),
-                    start_date.getDate() + 7
-                  ),
+                  start_date: addWeeks(start_date, 1),
                 },
               })
             }
