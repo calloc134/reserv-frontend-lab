@@ -9,6 +9,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
+import { getFormatDateString } from "@/utils/date/getFormatDateString";
 
 export const DeleteReservationModal = ({
   isOpened,
@@ -34,14 +35,7 @@ export const DeleteReservationModal = ({
                     <tr>
                       <td className="border px-4 py-2">日付</td>
                       <td className="border px-4 py-2">
-                        {modalState.date.getMonth() + 1}月
-                        {modalState.date.getDate()}日 (
-                        {
-                          ["日", "月", "火", "水", "木", "金", "土"][
-                            modalState.date.getDay()
-                          ]
-                        }
-                        )
+                        {getFormatDateString(modalState.date)})
                       </td>
                     </tr>
                     <tr>

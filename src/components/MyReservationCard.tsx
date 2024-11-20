@@ -1,4 +1,7 @@
 import { Table } from "@/utils/createTables";
+import { getFormatDateString } from "@/utils/date/getFormatDateString";
+import { getToday } from "@/utils/date/getToday";
+import { differenceInDays } from "date-fns";
 
 export const MyReservationCard = ({
   key,
@@ -21,15 +24,14 @@ export const MyReservationCard = ({
   }) => void;
   my_user_id?: string;
 }) => {
-  // const now_date = new Date();
+  const now_date = getToday();
   return (
     <div
       key={key}
       className="p-4 bg-white rounded-lg col-span-1 sm:col-span-2 md:col-span-2 border-2 border-black"
     >
       <div className="text-center text-lg font-semibold text-gray-700 mb-4">
-        {table_data.date.getMonth() + 1}月{table_data.date.getDate()}日 (
-        {["日", "月", "火", "水", "木", "金", "土"][table_data.date.getDay()]})
+        {getFormatDateString(table_data.date)}
       </div>
       <div>
         {table_data.reservation_slots.map(
@@ -52,8 +54,8 @@ export const MyReservationCard = ({
                       // 過去の予約は削除できない
                       const deletable =
                         reservation.user?.user_id === my_user_id &&
-                        // reservation.date.getTime() - now_date.getTime() > 0;
-                        true;
+                        differenceInDays(now_date, table_data.date) <= 0;
+                      true;
                       return (
                         <div
                           key={reservation_index}

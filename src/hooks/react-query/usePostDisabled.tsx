@@ -1,4 +1,4 @@
-import { convertFromDate } from "@/utils/convert/convertFromDate";
+import { convertFromDate } from "@/utils/date/convertFromDate";
 import { reservFetch } from "@/utils/fetch/reservFetch";
 import { useAuth } from "@clerk/clerk-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

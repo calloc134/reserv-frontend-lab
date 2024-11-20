@@ -1,3 +1,4 @@
+import { addDays, differenceInDays } from "date-fns";
 import {
   ReservationResponse,
   slot_length,
@@ -20,17 +21,11 @@ export const createTables = (data: {
   const table: Table[] = [];
 
   // 何日分の時間割を作成するか
-  // 差分より幅を作成。異なる月同士でも動作するように
-  const date_width =
-    Math.ceil(
-      (data.end_date.getTime() - data.start_date.getTime()) /
-        (1000 * 60 * 60 * 24)
-    ) + 1;
+  const date_width = differenceInDays(data.end_date, data.start_date) + 1;
 
   // 時間割テーブルの作成
   for (let i = 0; i < date_width; i++) {
-    const date = new Date(data.start_date);
-    date.setDate(data.start_date.getDate() + i);
+    const date = addDays(data.start_date, i);
     table.push({
       date: date,
       // unionのキーの数だけ配列を作成
@@ -40,10 +35,7 @@ export const createTables = (data: {
 
   // 該当する予約を配列に追加していく
   for (const reservation of data.reservations) {
-    const index = Math.floor(
-      (new Date(reservation.date).getTime() - data.start_date.getTime()) /
-        (1000 * 60 * 60 * 24)
-    );
+    const index = differenceInDays(new Date(reservation.date), data.start_date);
 
     table[index].reservation_slots[slotToNumber(reservation.slot) - 1].push(
       reservation

@@ -10,6 +10,7 @@ import { CreateReservationModal } from "@/components/CreateReservationModal";
 import { useCreateReservationModal } from "@/hooks/useCreateReservationModal";
 import { ReservationCard } from "@/components/ReservationCard";
 import { DatePaginator } from "@/components/DatePaginator";
+import { addWeeks } from "date-fns";
 
 export const WeeklyReservations = () => {
   const { start_date } = useSearch({ from: "/home/" });
@@ -82,30 +83,28 @@ export const WeeklyReservations = () => {
 
       <div className="flex justify-center flex-row gap-4">
         <DatePaginator
-          onClickPrevious={() =>
+          onClickPrevious={() => {
+            console.log(start_date);
+            const destination_start_date = addWeeks(start_date, -1);
+            console.log(destination_start_date);
             navigate({
               to: "/home",
               search: {
-                start_date: new Date(
-                  start_date.getFullYear(),
-                  start_date.getMonth(),
-                  start_date.getDate() - 7
-                ),
+                start_date: destination_start_date,
               },
-            })
-          }
-          onClickNext={() =>
+            });
+          }}
+          onClickNext={() => {
+            console.log(start_date);
+            const destination_start_date = addWeeks(start_date, 1);
+            console.log(destination_start_date);
             navigate({
               to: "/home",
               search: {
-                start_date: new Date(
-                  start_date.getFullYear(),
-                  start_date.getMonth(),
-                  start_date.getDate() + 7
-                ),
+                start_date: destination_start_date,
               },
-            })
-          }
+            });
+          }}
         />
       </div>
       <div className="flex justify-center">

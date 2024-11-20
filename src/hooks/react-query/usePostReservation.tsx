@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@clerk/clerk-react";
 import { reservFetch } from "@/utils/fetch/reservFetch";
-import { convertFromDate } from "@/utils/convert/convertFromDate";
+import { convertFromDate } from "@/utils/date/convertFromDate";
 
 export const usePostReservation = () => {
   const { getToken } = useAuth();
