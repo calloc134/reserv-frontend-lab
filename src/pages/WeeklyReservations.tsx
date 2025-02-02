@@ -5,7 +5,7 @@ import { useGetWeeklyReservations } from "../hooks/react-query/useGetWeeklyReser
 import { Slot } from "@/types/dto/ReservationResponse";
 import { usePostReservation } from "@/hooks/react-query/usePostReservation";
 import toast from "react-hot-toast";
-import { Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { Link, useSearch } from "@tanstack/react-router";
 import { CreateReservationModal } from "@/components/CreateReservationModal";
 import { useCreateReservationModal } from "@/hooks/useCreateReservationModal";
 import { ReservationCard } from "@/components/ReservationCard";
@@ -14,7 +14,6 @@ import { addWeeks } from "date-fns";
 
 export const WeeklyReservations = () => {
   const { start_date } = useSearch({ from: "/home/" });
-  const navigate = useNavigate();
 
   const { userId } = useAuth();
 
@@ -64,6 +63,9 @@ export const WeeklyReservations = () => {
     [mutateAsync, openModal]
   );
 
+  const previous_date = useMemo(() => addWeeks(start_date, -1), [start_date]);
+  const next_date = useMemo(() => addWeeks(start_date, 1), [start_date]);
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-center">
@@ -83,28 +85,16 @@ export const WeeklyReservations = () => {
 
       <div className="flex justify-center flex-row gap-4">
         <DatePaginator
-          onClickPrevious={() => {
-            console.log(start_date);
-            const destination_start_date = addWeeks(start_date, -1);
-            console.log(destination_start_date);
-            navigate({
-              to: "/home",
-              search: {
-                start_date: destination_start_date,
-              },
-            });
-          }}
-          onClickNext={() => {
-            console.log(start_date);
-            const destination_start_date = addWeeks(start_date, 1);
-            console.log(destination_start_date);
-            navigate({
-              to: "/home",
-              search: {
-                start_date: destination_start_date,
-              },
-            });
-          }}
+          PreviousLink={({ children }) => (
+            <Link to="/home" search={{ start_date: previous_date }}>
+              {children}
+            </Link>
+          )}
+          NextLink={({ children }) => (
+            <Link to="/home" search={{ start_date: next_date }}>
+              {children}
+            </Link>
+          )}
         />
       </div>
       <div className="flex justify-center">

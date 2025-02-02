@@ -6,6 +6,8 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { validateDateString } from "./utils/date/validateDateString";
+import { LoginPage } from "./pages/LoginPage";
+import { AuthenticateLayoutPage } from "./pages/AuthenticateLayoutPage";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -19,7 +21,8 @@ const rootRoute = createRootRoute({
 const index_route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
-}).lazy(() => import("./routes/IndexRoute").then((m) => m.IndexRoute));
+  component: () => <LoginPage />,
+});
 
 const not_found_route = createRoute({
   getParentRoute: () => rootRoute,
@@ -29,7 +32,12 @@ const not_found_route = createRoute({
 const home_route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/home",
-}).lazy(() => import("./routes/HomeRoute").then((m) => m.HomeRoute));
+  component: () => (
+    <AuthenticateLayoutPage>
+      <Outlet />
+    </AuthenticateLayoutPage>
+  ),
+});
 
 const reservations_route = createRoute({
   getParentRoute: () => home_route,

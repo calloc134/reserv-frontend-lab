@@ -4,7 +4,6 @@ import { createTables } from "../utils/createTables";
 import { useAuth } from "@clerk/clerk-react";
 import { useDeleteReservation } from "../hooks/react-query/useDeleteReservation";
 import { Link, useSearch } from "@tanstack/react-router";
-import { useNavigate } from "@tanstack/react-router";
 import { DatePaginator } from "@/components/DatePaginator";
 import { useDeleteReservationModal } from "@/hooks/useDeleteReservationModal";
 import toast from "react-hot-toast";
@@ -16,7 +15,6 @@ export const WeeklyMyReservations = () => {
   const { start_date } = useSearch({
     from: "/home/my_reservations",
   });
-  const navigate = useNavigate();
 
   const { userId } = useAuth();
 
@@ -73,6 +71,9 @@ export const WeeklyMyReservations = () => {
     [openModal, mutateAsync]
   );
 
+  const previous_date = useMemo(() => addWeeks(start_date, -1), [start_date]);
+  const next_date = useMemo(() => addWeeks(start_date, 1), [start_date]);
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-center">
@@ -93,22 +94,22 @@ export const WeeklyMyReservations = () => {
       <div className="flex justify-center flex-row gap-4">
         <div className="flex justify-center flex-row gap-4">
           <DatePaginator
-            onClickPrevious={() =>
-              navigate({
-                to: "/home/my_reservations",
-                search: {
-                  start_date: addWeeks(start_date, -1),
-                },
-              })
-            }
-            onClickNext={() =>
-              navigate({
-                to: "/home/my_reservations",
-                search: {
-                  start_date: addWeeks(start_date, 1),
-                },
-              })
-            }
+            PreviousLink={({ children }) => (
+              <Link
+                to="/home/my_reservations"
+                search={{ start_date: previous_date }}
+              >
+                {children}
+              </Link>
+            )}
+            NextLink={({ children }) => (
+              <Link
+                to="/home/my_reservations"
+                search={{ start_date: next_date }}
+              >
+                {children}
+              </Link>
+            )}
           />
         </div>
       </div>
