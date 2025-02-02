@@ -4,8 +4,8 @@ export const DatePaginator = ({
   PreviousLink,
   NextLink,
 }: {
-  PreviousLink: (children: React.ReactNode) => React.ReactNode;
-  NextLink: (children: React.ReactNode) => React.ReactNode;
+  PreviousLink: React.ComponentType<{ children: React.ReactNode }>;
+  NextLink: React.ComponentType<{ children: React.ReactNode }>;
 }) => {
   return (
     <>

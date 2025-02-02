@@ -85,20 +85,16 @@ export const WeeklyReservations = () => {
 
       <div className="flex justify-center flex-row gap-4">
         <DatePaginator
-          PreviousLink={(children: React.ReactNode) => {
-            return (
-              <Link to="/home" search={{ start_date: previous_date }}>
-                {children}
-              </Link>
-            );
-          }}
-          NextLink={(children: React.ReactNode) => {
-            return (
-              <Link to="/home" search={{ start_date: next_date }}>
-                {children}
-              </Link>
-            );
-          }}
+          PreviousLink={({ children }) => (
+            <Link to="/home" search={{ start_date: previous_date }}>
+              {children}
+            </Link>
+          )}
+          NextLink={({ children }) => (
+            <Link to="/home" search={{ start_date: next_date }}>
+              {children}
+            </Link>
+          )}
         />
       </div>
       <div className="flex justify-center">
