@@ -6,12 +6,10 @@ import { differenceInDays } from "date-fns";
 import { useCallback } from "react";
 
 export const ReservationCard = ({
-  key,
   table_data,
   onClickReservationSlotArg,
   my_user_id,
 }: {
-  key: string;
   table_data: Table;
   onClickReservationSlotArg: (date: Date, slot: Slot) => Promise<void>;
   my_user_id?: string;
@@ -30,10 +28,7 @@ export const ReservationCard = ({
   const now_date = getToday();
 
   return (
-    <div
-      key={key}
-      className="p-4 bg-white rounded-lg col-span-1 sm:col-span-2 md:col-span-2 border-2 border-black"
-    >
+    <div className="p-4 bg-white rounded-lg col-span-1 sm:col-span-2 md:col-span-2 border-2 border-black">
       <div className="text-center text-lg font-semibold text-gray-700 mb-4">
         {getFormatDateString(table_data.date)}
       </div>

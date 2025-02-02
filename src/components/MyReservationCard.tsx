@@ -4,12 +4,10 @@ import { getToday } from "@/utils/date/getToday";
 import { differenceInDays } from "date-fns";
 
 export const MyReservationCard = ({
-  key,
   table_data,
   onClickReservationArg,
   my_user_id,
 }: {
-  key: string;
   table_data: Table;
   onClickReservationArg: ({
     rord_uuid,
@@ -26,10 +24,7 @@ export const MyReservationCard = ({
 }) => {
   const now_date = getToday();
   return (
-    <div
-      key={key}
-      className="p-4 bg-white rounded-lg col-span-1 sm:col-span-2 md:col-span-2 border-2 border-black"
-    >
+    <div className="p-4 bg-white rounded-lg col-span-1 sm:col-span-2 md:col-span-2 border-2 border-black">
       <div className="text-center text-lg font-semibold text-gray-700 mb-4">
         {getFormatDateString(table_data.date)}
       </div>
