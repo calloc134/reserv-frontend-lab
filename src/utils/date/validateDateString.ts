@@ -17,6 +17,15 @@ function convertStringToDate(dateString: string): Result<Date, string> {
 }
 
 export function validateDateString(search: Record<string, unknown>) {
+  // TanStack RouterのアップデートでDate型で保存されるようになった
+  if (search.start_date instanceof Date) {
+    const monday = getMondayOfThisWeek(search.start_date);
+    return {
+      start_date: monday,
+    };
+  }
+
+  // 古いバージョンでは文字列で保存されている
   if (typeof search.start_date === "string") {
     const date_result = convertStringToDate(search.start_date);
     if (date_result.isOk()) {
